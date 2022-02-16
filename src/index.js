@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Main from "./main";
 import Register from "./pages/register";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Main />
     <Register />
   </React.StrictMode>,
   document.getElementById("root")
