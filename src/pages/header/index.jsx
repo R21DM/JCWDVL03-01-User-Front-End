@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/product-actions";
 import "../header/style.css";
+import { LOGOUT } from "../../actions/types";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -56,6 +57,14 @@ function NavigationBar() {
     };
   }, []);
 
+  useEffect(() => {
+    // Check Sign In
+    if (user.signIn) {
+      signIn();
+      dispatch({ type: LOGOUT });
+    }
+  });
+
   const close = () => {
     setModalForgot(false);
     setShow(true);
@@ -67,6 +76,10 @@ function NavigationBar() {
   };
   const closeLogin = () => {
     setShow(false);
+  };
+
+  const signIn = () => {
+    setShow(user.signIn);
   };
 
   const onButtonLogin = () => {
@@ -220,10 +233,6 @@ function NavigationBar() {
                     Services
                   </a>
 
-                  <a className="nav-link scrollto" href="#contact">
-                    Contact
-                  </a>
-
                   {!isSignIn ? (
                     <Button
                       variant="outline-info"
@@ -241,6 +250,13 @@ function NavigationBar() {
                       Logout
                     </Button>
                   )}
+                  <Button
+                    variant="outline-info"
+                    className="button"
+                    onClick={() => navigate("register")}
+                  >
+                    Register
+                  </Button>
                 </div>
               </Navbar.Collapse>
             </Container>

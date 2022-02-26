@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
+import { SIGN_IN } from "../../actions/types";
 
 const URL = "http://localhost:8000";
 
 function Register() {
+  //Redux state
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   //Variable Name
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -57,6 +63,15 @@ function Register() {
     let value = event.target.value;
     setPhone(value);
     validatePhone(value);
+  };
+
+  //Clear Input Form
+  const clearInput = () => {
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConfirm("");
+    setPhone("");
   };
 
   // Validation
@@ -168,6 +183,9 @@ function Register() {
       .catch((error) => {
         console.log(error);
       });
+
+    //Clear Input Form
+    clearInput();
   };
 
   //Template script
@@ -253,7 +271,10 @@ function Register() {
 
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Text className="text-dark fs-6">
-                  Already have an account? <Link to="/login">Sign In</Link>
+                  Already have an account?{" "}
+                  <Link to="/" onClick={() => dispatch({ type: SIGN_IN })}>
+                    Sign In
+                  </Link>
                 </Form.Text>
               </Form.Group>
               <Button
