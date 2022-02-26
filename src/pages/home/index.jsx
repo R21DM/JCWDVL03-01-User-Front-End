@@ -1,37 +1,58 @@
-import React, { useState, useEffect } from "react";
-import { Navigate, Link } from "react-router-dom";
-import { Form, Button, Alert, Spinner } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import "./style.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
-// const API_URL = "http://localhost:2000";
-
 function Home(props) {
-  // state
-  const [username, setUserName] = useState("");
-  const [password, setPassWord] = useState("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isSignIn, setIsSignIn] = useState(false);
-
-  // event handler
-  const onButtonLogin = () => {};
-
-  // side effect -> similiar with class component's lifecycle method
   useEffect(() => {}, []);
-
-  // conditional rendering : auth protection
-  if (isSignIn) {
-    return <Navigate to="/" />;
-  }
+  const navigation = useNavigate();
 
   return (
     <div>
       {/* --------------------------- Main ------------------------------*/}
 
       <main id="main">
-        {/* --------------------------- Login  ------------------------------*/}
-        <div className="login-container"></div>
+        {/* --------------------------- Home  ------------------------------*/}
+        <div className="body-feature">
+          <div className="banner">
+            <div
+              className="left"
+              style={{
+                background: `url(/images/1.jpg)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              <h1>Liquid Products</h1>
+              <p>We provide product in ml per-stock</p>
+              <Button
+                className="shop"
+                variant="outline-info"
+                onClick={() => navigation("product")}
+              >
+                Shop Now
+              </Button>
+            </div>
+            <div
+              className="right"
+              style={{
+                background: `url(/images/2.jpg)`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+              }}
+            >
+              <h1>Solid Product</h1>
+              <p>We provide product in gr per-stock</p>
+              <Button
+                className="shop"
+                variant="outline-info"
+                onClick={() => navigation("product")}
+              >
+                Shop Now
+              </Button>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
