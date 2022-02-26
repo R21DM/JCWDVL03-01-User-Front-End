@@ -14,7 +14,6 @@ function Main() {
     <div className="main-container">
       <Navbar />
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/product" element={<Product />} />
         <Route path="/" element={<Home />} />
