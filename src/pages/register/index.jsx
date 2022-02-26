@@ -131,7 +131,10 @@ function Register() {
   };
 
   //Register Function
-  const onButtonRegister = () => {
+  const onRegister = (event) => {
+    //event.preventDefault() --> Disable default behavior event submit (disable refresh page)
+    event.preventDefault();
+
     console.log(username, email, password, confirm, phone);
     const newUser = {
       username,
@@ -188,7 +191,7 @@ function Register() {
         <div className="container">
           <div className="register-form">
             <h2 className="mx-auto">Register</h2>
-            <Form>
+            <Form onSubmit={onRegister}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
@@ -256,7 +259,6 @@ function Register() {
               <Button
                 variant="primary"
                 type="submit"
-                onClick={onButtonRegister}
                 disabled={
                   errorUsername ||
                   errorEmail ||
