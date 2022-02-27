@@ -33,6 +33,7 @@ function Register() {
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorConfirm, setErrorConfirm] = useState(true);
   const [errorPhone, setErrorPhone] = useState(true);
+  const [errorRegistration, setErrorRegistration] = useState(false);
 
   //Event handlers
   const onHandleUsername = (event) => {
@@ -169,6 +170,7 @@ function Register() {
         //Cancel if duplication of username or email
         if (respond.data.length) {
           setModal(true);
+          setErrorRegistration(true);
           console.log("Username or email already exist");
           return;
         }
@@ -177,6 +179,7 @@ function Register() {
         Axios.post(URL + "/register", newUser)
           .then((respond) => {
             console.log("respond", respond);
+            setModal(true);
           })
           .catch((error) => console.log(error));
       })
@@ -292,15 +295,33 @@ function Register() {
               </Button>
             </Form>
             <Modal show={showModal} onHide={handleCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Register Failed</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Username or email already exist</Modal.Body>
-              <Modal.Footer>
-                <Button variant="primary" onClick={handleCloseModal}>
-                  Close
-                </Button>
-              </Modal.Footer>
+              {errorRegistration ? (
+                <div>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Register Failed</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>Username or email already exist</Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="primary" onClick={handleCloseModal}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </div>
+              ) : (
+                <div>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Register Success</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Please check your email to verify your account
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="primary" onClick={handleCloseModal}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </div>
+              )}
             </Modal>
           </div>
         </div>

@@ -8,6 +8,7 @@ import Home from "./pages/home/index";
 import Navbar from "./pages/header";
 import Footer from "./pages/footer";
 import Register from "./pages/register";
+import Verify from "./pages/verify";
 
 function Main() {
   return (
@@ -15,6 +16,7 @@ function Main() {
       <Navbar />
       <Routes>
         <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
         <Route path="/" element={<Home />} />
       </Routes>
