@@ -9,6 +9,7 @@ import Navbar from "./pages/header";
 import Footer from "./pages/footer";
 import Register from "./pages/register";
 import Verify from "./pages/verify";
+import Product_Detail from "./pages/products-detail";
 
 function Main() {
   return (
@@ -18,6 +19,7 @@ function Main() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/detail" element={<Product_Detail />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />

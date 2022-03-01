@@ -229,9 +229,6 @@ function NavigationBar() {
                   <Nav.Link onClick={() => navigate("product")}>
                     Products
                   </Nav.Link>
-                  <a className="nav-link scrollto" href="#services">
-                    Services
-                  </a>
 
                   {!isSignIn ? (
                     <Button
