@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getProducts } from "../../actions/product-actions";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Image } from "react-bootstrap";
 import "./style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -69,42 +69,14 @@ function Product_Detail(props) {
       </div>
       <div>
         {/* <!----container----> */}
-        <div className="container">
-          {/* <!----top-header----> */}
-          <div className="top-header">
-            <div className="logo">
-              <a href="index.html">
-                <img src="assets/img/logo.png" title="brandlogo" />
-              </a>
-            </div>
-
-            <div className="clearfix"> </div>
-          </div>
-          {/* <!----//top-header----> */}
-          <div className="top-header-nav">
-            <br />
-            <div className="clearfix"> </div>
-          </div>
-        </div>
-        {/* <!--//top-header-nav----> */}
+        <div
+          className="container bg-primary"
+          style={{ marginTop: "12%" }}
+        ></div>
         {/* <!----content----> */}
         <div className="content">
           <div className="container">
-            {/* <!--- products ----> */}
-            <div className="products">
-              <div className="product-filter">
-                <h1>
-                  <a href="#">FILTER</a>
-                </h1>
-                <div className="product-filter-grids">
-                  {/* <!----> */}
-                  <div className="col-md-6 product-filter-grid1-brands-col2"></div>
-                  {/* <!----> */}
-                  <div className="product-filter-grid1-brands-col3"></div>
-                  <div className="clearfix"> </div>
-                </div>
-              </div>
-            </div>
+            <div className="products"></div>
           </div>
           <div className="clearfix"> </div>
           {/* <!-- //products ----> */}
@@ -116,185 +88,82 @@ function Product_Detail(props) {
                   <h2>Men'sFootwear</h2>
                   <p>Hookset Handcrafted Fabric Chukka</p>
                 </div>
-                <div className="col-md-4 product-details-row1-col1">
-                  {/* <!----details-product-slider---> */}
-                  {/* <!-- Include the Etalage files --> */}
-                  <link rel="stylesheet" href="assets/css/etalage.css" />
-                  <script src="assets/js/jquery.etalage.min.js"></script>
-                  {/* <!-- Include the Etalage files --> */}
-                  {/* <!----//details-product-slider---> */}
-                  <div className="details-left">
-                    <div className="details-left-slider">
-                      <ul id="etalage">
-                        <li>
-                          <a href="optionallink.html">
-                            <img
-                              className="etalage_thumb_image"
-                              src="assets/img/product-slide/image1_thumb.jpg"
-                            />
-                            <img
-                              className="etalage_source_image"
-                              src="assets/img/product-slide/image1_large.jpg"
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image2_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image2_large.jpg"
-                          />
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image3_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image3_large.jpg"
-                          />
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image4_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image4_large.jpg"
-                          />
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image5_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image5_large.jpg"
-                          />
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image6_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image6_large.jpg"
-                          />
-                        </li>
-                        <li>
-                          <img
-                            className="etalage_thumb_image"
-                            src="assets/img/product-slide/image7_thumb.jpg"
-                          />
-                          <img
-                            className="etalage_source_image"
-                            src="assets/img/product-slide/image7_large.jpg"
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-8 product-details-row1-col2">
-                  <div className="product-rating">
-                    <a className="rate" href="#">
-                      <span> </span>
-                    </a>
-                    <label>
-                      <a href="#">
-                        Read <b>8</b> Reviews
-                      </a>
-                    </label>
-                  </div>
-                  <div className="product-price">
-                    <div className="product-price-left text-right">
-                      <span>174.00</span>
+                <div className="product-filter-grids d-flex flex-row">
+                  <Image
+                    className="fluid rounded w-50 mx-2 my-2"
+                    src="assets/img/about.jpg"
+                  />
+                  <div className="product-price w-50">
+                    <div className="product-price-left text-right w-100">
+                      <h3>Current Price</h3>
                       <h5>109.00$</h5>
                     </div>
-                    <div className="product-price-right">
-                      <a href="#">
-                        <span> </span>
-                      </a>
-                      <label>
-                        {" "}
-                        save <b>40%</b>
-                      </label>
-                    </div>
                     <div className="clearfix"> </div>
-                  </div>
-                  <div className="product-price-details">
-                    <p className="text-right">
-                      This is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using 'Content here,e{" "}
-                    </p>
-                    <a className="shipping" href="#">
-                      <span> </span>Free shipping
-                    </a>
-                    <div className="clearfix"> </div>
-                    <div className="product-size-qty">
-                      <div className="pro-size">
-                        <span>Size:</span>
-                        <select>
-                          <option>7</option>
-                          <option>8</option>
-                          <option>9</option>
-                          <option>10</option>
-                          <option>11</option>
-                        </select>
+                    <div className="product-price-details">
+                      <p className="text-right">
+                        This is a long established fact that a reader will be
+                        distracted by the readable content of a page when
+                        looking at its layout. The point of using Lorem Ipsum is
+                        that it has a more-or-less normal distribution of
+                        letters, as opposed to using 'Content here,e{" "}
+                      </p>
+                      <div className=" d-flex justify-content-center">
+                        <a className="shipping" href="#">
+                          <span> </span>Free shipping
+                        </a>
                       </div>
-                      <div className="pro-qty">
-                        <span>Qty:</span>
-                        <select>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
+                      {/* Add To Cart */}
+                      <div className="clearfix d-flex flex-row w-100 bg-dark">
+                        <div className="product-size-qty d-flex w-100 justify-content-between">
+                          <div className="pro-qty d-flex flex-row">
+                            <div className="d-flex align-items-center text-info">
+                              Quantity:
+                            </div>
+                            <select>
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                          </div>
+                          <div className="add-cart-btn d-flex">
+                            <input type="button" value="Add to cart" />
+                          </div>
+                        </div>
                       </div>
-                      <div className="clearfix"> </div>
-                    </div>
-                    <div className="clearfix"> </div>
-                    <div className="product-cart-share">
-                      <div className="add-cart-btn">
-                        <input type="button" value="Add to cart" />
-                      </div>
-                      <ul className="product-share text-right">
-                        <h3>Share This:</h3>
-                        <ul>
-                          <li>
-                            <a className="share-face" href="#">
-                              <span> </span>{" "}
-                            </a>
-                          </li>
-                          <li>
-                            <a className="share-twitter" href="#">
-                              <span> </span>{" "}
-                            </a>
-                          </li>
-                          <li>
-                            <a className="share-google" href="#">
-                              <span> </span>{" "}
-                            </a>
-                          </li>
-                          <li>
-                            <a className="share-rss" href="#">
-                              <span> </span>{" "}
-                            </a>
-                          </li>
-                          <div className="clear"> </div>
+                      <div className="product-cart-share">
+                        <ul className="product-share text-right">
+                          <h3 className="d-flex justify-content-center">
+                            Share This:
+                          </h3>
+                          <div className="d-flex justify-content-between">
+                            <ul>
+                              <li>
+                                <a className="share-face" href="#">
+                                  <span> </span>{" "}
+                                </a>
+                              </li>
+                              <li>
+                                <a className="share-twitter" href="#">
+                                  <span> </span>{" "}
+                                </a>
+                              </li>
+                              <li>
+                                <a className="share-google" href="#">
+                                  <span> </span>{" "}
+                                </a>
+                              </li>
+                              <li>
+                                <a className="share-rss" href="#">
+                                  <span> </span>{" "}
+                                </a>
+                              </li>
+                              <div className="clear"> </div>
+                            </ul>
+                          </div>
                         </ul>
-                      </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -305,17 +174,6 @@ function Product_Detail(props) {
               <div className="product-tabs">
                 {/* <!--Horizontal Tab--> */}
                 <div id="horizontalTab">
-                  <ul>
-                    <li>
-                      <a href="#tab-1">Product overwiev</a>
-                    </li>
-                    <li>
-                      <a href="#tab-2">Features</a>
-                    </li>
-                    <li>
-                      <a href="#tab-3">Customer reviews</a>
-                    </li>
-                  </ul>
                   <div id="tab-1" className="product-complete-info">
                     <h3>DESCRIPTION:</h3>
                     <p>
