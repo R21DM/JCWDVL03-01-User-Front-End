@@ -1,48 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { getProducts } from "../../actions/product-actions";
-import { Button, Card, Image } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import { Image, Tabs, Tab } from "react-bootstrap";
 import "./style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Product_Detail(props) {
-  const dispatch = useDispatch();
-  const { products } = useSelector((state) => {
-    return {
-      products: state.products.data,
-    };
-  });
-  const navigation = useNavigate();
+  //Get data from query params
+  const query_param = useLocation();
+  const params = new URLSearchParams(query_param.search);
+  const id = params.get("id");
 
-  const [loading, setLoading] = useState(false);
+  //Product detail data
+  const [product_name, setProduct_name] = useState("Null");
+  const [product_price, setProduct_price] = useState("NaN");
+  const [product_unit, setProduct_unit] = useState("unit");
+  const [product_image, setProduct_image] = useState("");
+  const [product_brand, setProduct_brand] = useState("Null");
+  const [product_class, setProduct_class] = useState("Null");
 
-  const renderListProducts = () => {
-    console.log("Productnya", products);
-    return products.map((product) => {
-      return (
-        <Card key={product.id} id="product-card">
-          {/* <Card.Img variant="top" src={product.images[0]} /> */}
-          <Card.Body className="card-body">
-            <Card.Title>{product.name}</Card.Title>
-            <Card.Text>
-              {"Rp. "}
-              {product.price}
-              {`/${product.unit}`}
-            </Card.Text>
-            <Button
-              variant="primary"
-              onClick={() => navigation(`/products/detail/${product.id}`)}
-            >
-              Check Details
-            </Button>
-          </Card.Body>
-        </Card>
-      );
-    });
-  };
+  useEffect(() => {
+    Axios.get(API_URL + `/products/get`, { params: { id } })
+      .then((res) => {
+        console.log(res.data);
+        setProduct_name(res.data[0].name);
+        setProduct_price(res.data[0].price.toLocaleString("in-ID"));
+        setProduct_unit(res.data[0].unit);
+        setProduct_brand(res.data[0].brand);
+        setProduct_class(res.data[0].drug_class);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <div>
@@ -63,9 +52,7 @@ function Product_Detail(props) {
           rel="stylesheet"
           type="text/css"
         />
-        {/* <!---//webfonts--->
-		<!----start-top-nav-script----> */}
-        {/* <!----//End-top-nav-script----> */}
+        {/* <!---//webfonts---> */}
       </div>
       <div>
         {/* <!----container----> */}
@@ -79,14 +66,24 @@ function Product_Detail(props) {
             <div className="products"></div>
           </div>
           <div className="clearfix"> </div>
-          {/* <!-- //products ----> */}
           {/* <!----product-details---> */}
           <div className="product-details">
             <div className="container">
               <div className="product-details-row1">
                 <div className="product-details-row1-head">
-                  <h2>Men'sFootwear</h2>
-                  <p>Hookset Handcrafted Fabric Chukka</p>
+                  <h2>{product_name}</h2>
+                  <p>
+                    <strong>Generic name: </strong>
+                    {product_name}
+                  </p>
+                  <p>
+                    <strong>Brand name: </strong>
+                    {product_brand}
+                  </p>
+                  <p>
+                    <strong>Drug class: </strong>
+                    {product_class}
+                  </p>
                 </div>
                 <div className="product-filter-grids d-flex flex-row">
                   <Image
@@ -96,7 +93,9 @@ function Product_Detail(props) {
                   <div className="product-price w-50">
                     <div className="product-price-left text-right w-100">
                       <h3>Current Price</h3>
-                      <h5>109.00$</h5>
+                      <h5>
+                        Rp {product_price},-/{product_unit}
+                      </h5>
                     </div>
                     <div className="clearfix"> </div>
                     <div className="product-price-details">
@@ -168,25 +167,30 @@ function Product_Detail(props) {
                   </div>
                 </div>
                 <div className="clearfix"> </div>
-                {/* <!--//product-details---> */}
               </div>
-              {/* <!---- product-details ----> */}
               <div className="product-tabs">
                 {/* <!--Horizontal Tab--> */}
-                <div id="horizontalTab">
-                  <div id="tab-1" className="product-complete-info">
-                    <h3>DESCRIPTION:</h3>
-                    <p>
-                      With its beautiful premium leather, lace-up oxford
-                      styling, recycled rubber outsoles and 9-inch height, this
-                      Earthkeepers City Premium style is an undeniably handsome
-                      boot. To complement its rustic, commanding outer
-                      appearance, we've paid attention to the inside as well -
-                      by adding SmartWool® faux shearling to the linings and
-                      crafting the footbed using our exclusive anti-fatigue
-                      comfort foam technology to absorb shock. Imported.
-                    </p>
-                    <span>DETAILS:</span>
+                <Tabs
+                  defaultActiveKey="prescription"
+                  id="tabs"
+                  className="mb-3"
+                >
+                  <Tab eventKey="prescription" title="Prescription">
+                    <div>
+                      <p>
+                        With its beautiful premium leather, lace-up oxford
+                        styling, recycled rubber outsoles and 9-inch height,
+                        this Earthkeepers City Premium style is an undeniably
+                        handsome boot. To complement its rustic, commanding
+                        outer appearance, we've paid attention to the inside as
+                        well - by adding SmartWool® faux shearling to the
+                        linings and crafting the footbed using our exclusive
+                        anti-fatigue comfort foam technology to absorb shock.
+                        Imported.
+                      </p>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="dosage" title="Dosage">
                     <div className="product-fea">
                       <p>
                         Premium burnished full-grain leather and suede upper
@@ -216,15 +220,19 @@ function Product_Detail(props) {
                         outsole is made with 42% recycled rubber
                       </p>
                     </div>
-                  </div>
-                </div>
-                {/* <!-- Responsive Tabs JS --> */}
-                <script
-                  src="assets/js/jquery.responsiveTabs.js"
-                  type="text/javascript"
-                ></script>
+                  </Tab>
+                  <Tab eventKey="side-effects" title="Side Effects">
+                    <div>
+                      <p>
+                        Get emergency medical help if you have signs of an
+                        allergic reaction: hives; chest tightness, difficult
+                        breathing; feeling like you might pass out; swelling of
+                        your face, lips, tongue, or throat.
+                      </p>
+                    </div>
+                  </Tab>
+                </Tabs>
               </div>
-              {/* <!-- //product-details ----> */}
             </div>
           </div>
           {/* <!----content----> */}
