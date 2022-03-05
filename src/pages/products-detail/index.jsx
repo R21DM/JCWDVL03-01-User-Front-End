@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
-import { Image, Tabs, Tab } from "react-bootstrap";
+import {
+  Image,
+  Tabs,
+  Tab,
+  ButtonGroup,
+  Button,
+  Form,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import "./style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -19,6 +28,9 @@ function Product_Detail(props) {
   const [product_image, setProduct_image] = useState("");
   const [product_brand, setProduct_brand] = useState("Null");
   const [product_class, setProduct_class] = useState("Null");
+  const [product_desc, setProduct_desc] = useState("Null");
+  const [product_dosage, setProduct_dosage] = useState("Null");
+  const [product_warning, setProduct_warning] = useState("Null");
 
   useEffect(() => {
     Axios.get(API_URL + `/products/get`, { params: { id } })
@@ -30,9 +42,31 @@ function Product_Detail(props) {
         setProduct_brand(res.data[0].brand);
         setProduct_class(res.data[0].drug_class);
         setProduct_image(`images/${res.data[0].name}.jpg`);
+        setProduct_desc(res.data[0].description);
+        setProduct_dosage(res.data[0].dosage);
+        setProduct_warning(res.data[0].before_taking);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  //Order Quantity Handler
+  const [order_qty, setOrder_qty] = useState(1);
+
+  const subtract_1 = () => {
+    setOrder_qty(order_qty - 1);
+  };
+
+  const subtract_10 = () => {
+    setOrder_qty(order_qty - 10);
+  };
+
+  const add_1 = () => {
+    setOrder_qty(order_qty + 1);
+  };
+
+  const add_10 = () => {
+    setOrder_qty(order_qty + 10);
+  };
 
   return (
     <div>
@@ -87,11 +121,21 @@ function Product_Detail(props) {
                   </p>
                 </div>
                 <div className="product-filter-grids d-flex flex-row">
-                  <Image
-                    className="fluid rounded w-50 h-50 mx-2 my-2"
-                    src={product_image}
-                    onError={() => setProduct_image(`images/liquid.jpg`)}
-                  />
+                  <div className="d-flex w-50 flex-column justify-content-center align-items-center">
+                    <Image
+                      className="fluid rounded w-75 h-75 mx-2 mt-4 mb-2"
+                      src={product_image}
+                      onError={() => setProduct_image(`images/liquid.jpg`)}
+                    />
+                    <div className="product-cart-share w-100">
+                      <ul className="product-share text-right">
+                        <h3 className="d-flex justify-content-start">
+                          Share This:
+                        </h3>
+                        <Image src="assets/img/social-share.png" />
+                      </ul>
+                    </div>
+                  </div>
                   <div className="product-price w-50">
                     <div className="product-price-left text-right w-100">
                       <h3>Current Price</h3>
@@ -99,128 +143,106 @@ function Product_Detail(props) {
                         Rp {product_price},-/{product_unit}
                       </h5>
                     </div>
-                    <div className="clearfix"> </div>
                     <div className="product-price-details">
-                      <p className="text-right">
-                        This is a long established fact that a reader will be
-                        distracted by the readable content of a page when
-                        looking at its layout. The point of using Lorem Ipsum is
-                        that it has a more-or-less normal distribution of
-                        letters, as opposed to using 'Content here,e{" "}
-                      </p>
+                      <p className="text-right">{product_desc}</p>
                       <div className=" d-flex justify-content-center">
                         <a className="shipping" href="#">
                           <span> </span>Free shipping
                         </a>
                       </div>
                       {/* Add To Cart */}
-                      <div className="clearfix d-flex flex-row w-100 bg-dark">
-                        <div className="product-size-qty d-flex w-100 justify-content-between">
-                          <div className="pro-qty d-flex flex-row">
-                            <div className="d-flex align-items-center text-info">
-                              Quantity:
+                      <div className="d-flex flex-row w-100 bg-dark">
+                        <div className="mx-2 my-2 d-flex w-100 justify-content-center">
+                          <div className="d-flex flex-column align-items-center">
+                            <div className="text-info mb-1">Quantity</div>
+                            <div className="d-flex flex-row">
+                              <ButtonGroup
+                                className=""
+                                aria-label="Subtraction"
+                              >
+                                <Button
+                                  variant="outline-secondary"
+                                  onClick={() => subtract_10()}
+                                  disabled={order_qty <= 10 ? true : false}
+                                >
+                                  --
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => subtract_1()}
+                                  disabled={order_qty <= 1 ? true : false}
+                                >
+                                  -
+                                </Button>
+                              </ButtonGroup>
+                              <Form>
+                                <Form.Group
+                                  className="mb-3 mx-2 text-info d-flex flex-column align-items-center"
+                                  controlId="exampleForm.ControlInput1"
+                                >
+                                  <InputGroup>
+                                    <FormControl
+                                      type="text"
+                                      placeholder="1"
+                                      value={order_qty}
+                                      readOnly
+                                    />
+                                    <InputGroup.Text id="basic-addon">
+                                      {product_unit}
+                                    </InputGroup.Text>
+                                  </InputGroup>
+                                </Form.Group>
+                              </Form>
+                              <ButtonGroup
+                                className="me-2"
+                                aria-label="Addition"
+                              >
+                                <Button
+                                  variant="primary"
+                                  onClick={() => add_1()}
+                                >
+                                  +
+                                </Button>
+                                <Button
+                                  variant="outline-primary"
+                                  onClick={() => add_10()}
+                                >
+                                  ++
+                                </Button>
+                              </ButtonGroup>
                             </div>
-                            <select>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                          </div>
-                          <div className="add-cart-btn d-flex">
-                            <input type="button" value="Add to cart" />
                           </div>
                         </div>
                       </div>
-                      <div className="product-cart-share">
-                        <ul className="product-share text-right">
-                          <h3 className="d-flex justify-content-center">
-                            Share This:
-                          </h3>
-                          <div className="d-flex justify-content-between">
-                            <ul>
-                              <li>
-                                <a className="share-face" href="#">
-                                  <span> </span>{" "}
-                                </a>
-                              </li>
-                              <li>
-                                <a className="share-twitter" href="#">
-                                  <span> </span>{" "}
-                                </a>
-                              </li>
-                              <li>
-                                <a className="share-google" href="#">
-                                  <span> </span>{" "}
-                                </a>
-                              </li>
-                              <li>
-                                <a className="share-rss" href="#">
-                                  <span> </span>{" "}
-                                </a>
-                              </li>
-                              <div className="clear"> </div>
-                            </ul>
-                          </div>
-                        </ul>
+                      <div className="add-cart-btn d-flex py-3 justify-content-center bg-dark">
+                        <Button
+                          variant="danger"
+                          className="d-flex flex-column mx-1"
+                        >
+                          <Image
+                            className="d-flex fluid center"
+                            src="assets/img/cart-icon.png"
+                            alt="add-to-cart"
+                          />
+                          Add to Cart
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="clearfix"> </div>
               </div>
-              <div className="product-tabs">
+              <div className="product-tabs bg-light mb-3 px-3 py-3">
                 {/* <!--Horizontal Tab--> */}
-                <Tabs
-                  defaultActiveKey="prescription"
-                  id="tabs"
-                  className="mb-3"
-                >
-                  <Tab eventKey="prescription" title="Prescription">
+                <Tabs defaultActiveKey="warning" id="tabs" className="mb-3">
+                  <Tab eventKey="warning" title="Warning">
                     <div>
-                      <p>
-                        With its beautiful premium leather, lace-up oxford
-                        styling, recycled rubber outsoles and 9-inch height,
-                        this Earthkeepers City Premium style is an undeniably
-                        handsome boot. To complement its rustic, commanding
-                        outer appearance, we've paid attention to the inside as
-                        well - by adding SmartWool® faux shearling to the
-                        linings and crafting the footbed using our exclusive
-                        anti-fatigue comfort foam technology to absorb shock.
-                        Imported.
-                      </p>
+                      <p>{product_warning}</p>
                     </div>
                   </Tab>
                   <Tab eventKey="dosage" title="Dosage">
                     <div className="product-fea">
-                      <p>
-                        Premium burnished full-grain leather and suede upper
-                      </p>
-                      <p>
-                        Leather is from a tannery rated Silver for its water,
-                        energy and waste-management practices
-                      </p>
-                      <p>
-                        Leather lining and footbed for a premium feel and
-                        optimal comfort
-                      </p>
-                      <p>
-                        SmartWool® faux shearling lining is made with 60% merino
-                        wool and 40% PET
-                      </p>
-                      <p>
-                        Reflective insole board for additional warmth under foot
-                      </p>
-                      <p>100% organic cotton laces</p>
-                      <p>
-                        SmartWool® fabric-lined anti-fatigue footbed provides
-                        superior, all-day comfort and climate control
-                      </p>
-                      <p>
-                        Timberland® exclusive Gripstick™ and Green Rubber™
-                        outsole is made with 42% recycled rubber
-                      </p>
+                      <p>{product_dosage}</p>
                     </div>
                   </Tab>
                   <Tab eventKey="side-effects" title="Side Effects">
