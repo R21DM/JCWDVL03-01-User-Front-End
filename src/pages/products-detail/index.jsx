@@ -29,6 +29,7 @@ function Product_Detail(props) {
         setProduct_unit(res.data[0].unit);
         setProduct_brand(res.data[0].brand);
         setProduct_class(res.data[0].drug_class);
+        setProduct_image(`images/${res.data[0].name}.jpg`);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -87,8 +88,9 @@ function Product_Detail(props) {
                 </div>
                 <div className="product-filter-grids d-flex flex-row">
                   <Image
-                    className="fluid rounded w-50 mx-2 my-2"
-                    src="assets/img/about.jpg"
+                    className="fluid rounded w-50 h-50 mx-2 my-2"
+                    src={product_image}
+                    onError={() => setProduct_image(`images/liquid.jpg`)}
                   />
                   <div className="product-price w-50">
                     <div className="product-price-left text-right w-100">
