@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./index.css";
 
 // pages
@@ -10,8 +11,12 @@ import Footer from "./pages/footer";
 import Register from "./pages/register";
 import Verify from "./pages/verify";
 import Product_Detail from "./pages/products-detail";
+import Cart from "./pages/cart";
 
 function Main() {
+  //Redux state
+  const user = useSelector((state) => state.user);
+
   return (
     <div className="main-container">
       <Navbar />
@@ -20,6 +25,11 @@ function Main() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
         <Route path="/detail" element={<Product_Detail />} />
+        <Route
+          path="/cart"
+          // element={user.id ? <Cart /> : <Navigate to="/" />}
+          element={<Cart />}
+        />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />

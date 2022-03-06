@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Image,
   Tabs,
@@ -13,9 +14,12 @@ import {
 } from "react-bootstrap";
 import "./style.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "http://localhost:8000";
 
-function Product_Detail(props) {
+function Product_Detail() {
+  //Redux state
+  const user = useSelector((state) => state.user);
+
   //Get data from query params
   const query_param = useLocation();
   const params = new URLSearchParams(query_param.search);
@@ -33,6 +37,7 @@ function Product_Detail(props) {
   const [product_warning, setProduct_warning] = useState("Null");
 
   useEffect(() => {
+    //Load product details data
     Axios.get(API_URL + `/products/get`, { params: { id } })
       .then((res) => {
         console.log(res.data);
@@ -52,20 +57,40 @@ function Product_Detail(props) {
   //Order Quantity Handler
   const [order_qty, setOrder_qty] = useState(1);
 
+  //Minus Product
   const subtract_1 = () => {
     setOrder_qty(order_qty - 1);
   };
-
   const subtract_10 = () => {
     setOrder_qty(order_qty - 10);
   };
 
+  //Add Product
   const add_1 = () => {
     setOrder_qty(order_qty + 1);
   };
-
   const add_10 = () => {
     setOrder_qty(order_qty + 10);
+  };
+
+  //Add to Cart
+  const addToCart = () => {
+    //Cart Data
+    const cartData = {
+      userId: 1,
+      productId: id,
+      qty: order_qty,
+      price: product_price * 1000,
+    };
+
+    console.log(cartData);
+
+    //POST data to back-end
+    Axios.post(API_URL + "/cart", cartData)
+      .then((respond) => {
+        console.log("respond", respond);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -121,9 +146,9 @@ function Product_Detail(props) {
                   </p>
                 </div>
                 <div className="product-filter-grids d-flex flex-row">
-                  <div className="d-flex w-50 flex-column justify-content-center align-items-center">
+                  <div className="d-flex w-50 flex-column justify-content-center align-items-center mx-2">
                     <Image
-                      className="fluid rounded w-75 h-75 mx-2 mt-4 mb-2"
+                      className="fluid rounded w-100 h-100 mt-4 mb-2"
                       src={product_image}
                       onError={() => setProduct_image(`images/liquid.jpg`)}
                     />
@@ -157,18 +182,18 @@ function Product_Detail(props) {
                             <div className="text-info mb-1">Quantity</div>
                             <div className="d-flex flex-row">
                               <ButtonGroup
-                                className=""
+                                className="py-4"
                                 aria-label="Subtraction"
                               >
                                 <Button
-                                  variant="outline-secondary"
+                                  variant="outline-primary"
                                   onClick={() => subtract_10()}
                                   disabled={order_qty <= 10 ? true : false}
                                 >
-                                  --
+                                  -10
                                 </Button>
                                 <Button
-                                  variant="secondary"
+                                  variant="primary"
                                   onClick={() => subtract_1()}
                                   disabled={order_qty <= 1 ? true : false}
                                 >
@@ -191,10 +216,27 @@ function Product_Detail(props) {
                                       {product_unit}
                                     </InputGroup.Text>
                                   </InputGroup>
+                                  <InputGroup>
+                                    <InputGroup.Text id="total-price">
+                                      Rp
+                                    </InputGroup.Text>
+                                    <FormControl
+                                      type="text"
+                                      placeholder="Total Price"
+                                      value={
+                                        (
+                                          order_qty *
+                                          product_price *
+                                          1000
+                                        ).toLocaleString("in-ID") + ",-"
+                                      }
+                                      readOnly
+                                    />
+                                  </InputGroup>
                                 </Form.Group>
                               </Form>
                               <ButtonGroup
-                                className="me-2"
+                                className="py-4"
                                 aria-label="Addition"
                               >
                                 <Button
@@ -207,7 +249,7 @@ function Product_Detail(props) {
                                   variant="outline-primary"
                                   onClick={() => add_10()}
                                 >
-                                  ++
+                                  +10
                                 </Button>
                               </ButtonGroup>
                             </div>
@@ -218,6 +260,7 @@ function Product_Detail(props) {
                         <Button
                           variant="danger"
                           className="d-flex flex-column mx-1"
+                          onClick={addToCart}
                         >
                           <Image
                             className="d-flex fluid center"
