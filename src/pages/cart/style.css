@@ -1,6 +1,6 @@
 .cart-container {
   margin-top: 12%;
-  height: 100vh;
+  height: auto;
   background-color: white;
 }
 
@@ -12,7 +12,7 @@
 
 .img-cart {
   display: block;
-  max-width: 230px;
+  max-width: 127px;
   max-height: 95px;
   width: auto;
   height: auto;

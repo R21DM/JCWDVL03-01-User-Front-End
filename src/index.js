@@ -12,11 +12,13 @@ import Main from "./main";
 
 import userReducer from "./reducers/user-reducer";
 import productsReducer from "./reducers/products-reducer";
+import cartReducer from "./reducers/cart-reducer";
 
 // combine all reducer
 const allReducer = combineReducers({
   user: userReducer,
   products: productsReducer,
+  cart: cartReducer,
 });
 
 // craete global storage
