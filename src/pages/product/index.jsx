@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getProducts } from "../../actions/product-actions";
-import { Button, Card } from "react-bootstrap";
+import {
+  getProducts,
+  categoryProducts,
+  minPriceFilter,
+} from "../../actions/product-actions";
+import { Button, Card, Form } from "react-bootstrap";
 import "../product/style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -18,6 +22,8 @@ function Product(props) {
   const navigation = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [liquid, setLiquid] = useState(true);
+  const [solid, setSolid] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -35,7 +41,13 @@ function Product(props) {
     return products.map((product) => {
       return (
         <Card key={product.id} id="product-card">
-          {/* <Card.Img variant="top" src={product.images[0]} /> */}
+          <Card.Img
+            variant="top"
+            src={`http://localhost:2000/products/${product.name}.jpg`}
+            style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
+            width="50%"
+            height="50%"
+          />
           <Card.Body className="card-body">
             <Card.Title>{product.name}</Card.Title>
             <Card.Text>
@@ -63,6 +75,110 @@ function Product(props) {
         {/* --------------------------- Product  ------------------------------*/}
 
         <div className="product-container">
+          <div className="filter">
+            <div className="filter-header">
+              <h5 className="left1">Filter</h5>
+            </div>
+            <div className="filter-header2">
+              <div className="filter-header-color">
+                <h6 className="left2">Category</h6>
+              </div>
+
+              <div className="left2 form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="flexRadioDefault2"
+                  checked={liquid}
+                  onChange={() => {
+                    setLiquid(!liquid);
+                    console.log("Liquid", !liquid);
+                    console.log("solid", solid);
+                    if (!liquid) {
+                      if (solid && !liquid) {
+                        return dispatch(categoryProducts(""));
+                      }
+                      dispatch(categoryProducts("ml"));
+                    } else if (!solid && liquid) {
+                      dispatch(categoryProducts(""));
+                    } else dispatch(categoryProducts("mg"));
+                  }}
+                />
+                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                  Liquid
+                </label>
+              </div>
+
+              <div className="left2 form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="flexRadioDefault3"
+                  checked={solid}
+                  onChange={() => {
+                    setSolid(!solid);
+                    console.log("Liquid", liquid);
+                    console.log("solid", !solid);
+                    if (!solid) {
+                      if (!solid && liquid) {
+                        return dispatch(categoryProducts(""));
+                      }
+                      dispatch(categoryProducts("mg"));
+                    } else if (solid && !liquid) {
+                      dispatch(categoryProducts(""));
+                    } else dispatch(categoryProducts("ml"));
+                  }}
+                />
+                <label className="form-check-label" htmlFor="flexRadioDefault3">
+                  Solid
+                </label>
+              </div>
+            </div>
+            <div className="filter-header3">
+              <div className="filter-header2 filter-header-color">
+                <h6 className="left3">Price</h6>
+              </div>
+              <Form.Group className="mb-3 form1">
+                <div>
+                  <input
+                    type="text"
+                    className="form-control form2"
+                    placeholder="Min Price"
+                    onInput={(e) => {
+                      e.target.value = e.target.value
+                        .replace(/[^0-9.]/g, "")
+                        .replace(/(\..*)\./g, "");
+                    }}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      return dispatch(minPriceFilter(e.target.value));
+                    }}
+                  />
+                </div>
+                <div className="price-tag">Rp</div>
+              </Form.Group>
+            </div>
+            <Form.Group className="mb-3 form1" controlId="">
+              <div>
+                <input
+                  type="text"
+                  className="form-control form2"
+                  placeholder="Max Price"
+                  onInput={(e) => {
+                    e.target.value = e.target.value
+                      .replace(/[^0-9.]/g, "")
+                      .replace(/(\..*)\./g, "");
+                  }}
+
+                  // onChange={(e) => {
+                  //   console.log(e.target.value);
+                  //   return dispatch(minPrice(e.target.value));
+                  // }}
+                />
+              </div>
+              <div className="price-tag">Rp</div>
+            </Form.Group>
+          </div>
           <div className="body-feature-product">{renderListProducts()}</div>
         </div>
       </main>

@@ -21,7 +21,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function NavigationBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   // state
   const [username, setUserName] = useState("");
@@ -46,7 +46,7 @@ function NavigationBar() {
       setIsSignIn(true);
     }
 
-    script.src = "assets/js/main.js";
+    script.src = "/assets/js/main.js";
     script.async = true;
 
     document.body.appendChild(script);
@@ -71,7 +71,7 @@ function NavigationBar() {
 
   const onButtonLogin = () => {
     setLoading(true);
-    Axios.get(API_URL + `/users/get?username=${username}&password=${password}`)
+    Axios.post(API_URL + `/users/get`, { password, username })
       .then((respond) => {
         console.log(respond.data);
 
@@ -84,7 +84,7 @@ function NavigationBar() {
         }
 
         // save token or id in web storage
-        localStorage.setItem("token", respond.data[0].id);
+        localStorage.setItem("token", respond.data[0].token_data);
         // data user dijadikan JWTToken, bisa diubah jadi userdata
 
         // save data to global storage
@@ -102,11 +102,14 @@ function NavigationBar() {
         }
 
         // if success
-        navigate("/");
 
         console.log(user);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setError(true);
+        setLoading(false);
+        console.log(error);
+      });
   };
 
   const onButtonLogout = () => {
@@ -178,9 +181,14 @@ function NavigationBar() {
 
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-center">
-          <a className="logo me-auto">
-            <img src="assets/img/logo.png" alt="" />
-          </a>
+          <div className="logo me-auto">
+            <img
+              className="logonya"
+              src="/assets/img/logo.png"
+              alt=""
+              onClick={() => navigate("")}
+            />
+          </div>
 
           <Navbar expand="lg" className="nav-container">
             <Container fluid>

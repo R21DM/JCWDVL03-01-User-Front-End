@@ -129,6 +129,11 @@
   width: 20vw;
   height: auto;
 }
+
+.logonya:hover {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 600px) {
   .modal-size {
     width: 210px;

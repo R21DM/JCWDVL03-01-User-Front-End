@@ -19,12 +19,20 @@ function Home(props) {
               className="left"
               style={{
                 background: `url(/images/1.jpg)`,
-                backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
             >
-              <h1>Liquid Products</h1>
-              <p>We provide product in ml per-stock</p>
+              <h1>Syringe</h1>
+              <p style={{ textAlign: "Center" }}>
+                We provide product in ml per-stock{" "}
+                <span style={{ fontSize: "12px" }}>
+                  <br />
+                  FREE Syringe for 1/100ml
+                </span>
+              </p>
+
               <Button
                 className="shop"
                 variant="outline-info"
@@ -39,10 +47,13 @@ function Home(props) {
                 background: `url(/images/2.jpg)`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
             >
-              <h1>Solid Product</h1>
-              <p>We provide product in gr per-stock</p>
+              <h1>Pill</h1>
+              <p style={{ textAlign: "Center" }}>
+                We provide product in mg per-stock
+              </p>
               <Button
                 className="shop"
                 variant="outline-info"
