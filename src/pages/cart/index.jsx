@@ -31,6 +31,7 @@ function Cart() {
   //Variable Name
   const [editQty, setEditQty] = useState("");
   const [page, setPage] = useState(1);
+  const [editableItem, setEditableItem] = useState({});
 
   //Pagination control
   let active = page;
@@ -70,25 +71,49 @@ function Cart() {
               <Card.Title>
                 Rp {cart_item.total_price.toLocaleString("in-ID")},-
               </Card.Title>
-              {editQty ? (
+              {editableItem[cart_item.id] ? (
                 <ButtonGroup className="me-2" aria-label="First group">
                   <Button variant="secondary">+</Button>{" "}
                   <Button variant="secondary">-</Button>{" "}
-                  <Button variant="secondary" onClick={() => setEditQty(false)}>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setEditableItem({
+                        ...editableItem,
+                        [cart_item.id]: false,
+                      })
+                    }
+                  >
                     OK
                   </Button>{" "}
-                  <Button variant="secondary" onClick={() => setEditQty(false)}>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setEditableItem({
+                        ...editableItem,
+                        [cart_item.id]: false,
+                      })
+                    }
+                  >
                     Cancel
                   </Button>
                 </ButtonGroup>
               ) : (
-                <Button variant="secondary" onClick={() => setEditQty(true)}>
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    setEditableItem({
+                      ...editableItem,
+                      [cart_item.id]: true,
+                    })
+                  }
+                >
                   Edit
                 </Button>
               )}
             </Card.Body>
           </Card>
-          {editQty ? null : (
+          {editableItem[cart_item.id] ? null : (
             <Button variant="primary" className="py-3 px-5">
               Delete
             </Button>

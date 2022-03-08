@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Image,
@@ -21,9 +21,8 @@ function Product_Detail() {
   const user = useSelector((state) => state.user);
 
   //Get data from query params
-  const query_param = useLocation();
-  const params = new URLSearchParams(query_param.search);
-  const id = params.get("id");
+  const params = useParams();
+  const id = params.id;
 
   //Product detail data
   const [product_name, setProduct_name] = useState("Null");
@@ -35,6 +34,7 @@ function Product_Detail() {
   const [product_desc, setProduct_desc] = useState("Null");
   const [product_dosage, setProduct_dosage] = useState("Null");
   const [product_warning, setProduct_warning] = useState("Null");
+  // const[(product, setProduct)] = setState({});
 
   useEffect(() => {
     //Load product details data
@@ -46,7 +46,7 @@ function Product_Detail() {
         setProduct_unit(res.data[0].unit);
         setProduct_brand(res.data[0].brand);
         setProduct_class(res.data[0].drug_class);
-        setProduct_image(`images/${res.data[0].name}.jpg`);
+        setProduct_image(`/images/${res.data[0].name}.jpg`);
         setProduct_desc(res.data[0].description);
         setProduct_dosage(res.data[0].dosage);
         setProduct_warning(res.data[0].before_taking);
@@ -157,7 +157,7 @@ function Product_Detail() {
                         <h3 className="d-flex justify-content-start">
                           Share This:
                         </h3>
-                        <Image src="assets/img/social-share.png" />
+                        <Image src="/assets/img/social-share.png" />
                       </ul>
                     </div>
                   </div>
@@ -264,7 +264,7 @@ function Product_Detail() {
                         >
                           <Image
                             className="d-flex fluid center"
-                            src="assets/img/cart-icon.png"
+                            src="/assets/img/cart-icon.png"
                             alt="add-to-cart"
                           />
                           Add to Cart

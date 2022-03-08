@@ -45,7 +45,7 @@ function Product(props) {
             </Card.Text>
             <Button
               variant="primary"
-              onClick={() => navigation(`/detail?id=${product.id}`)}
+              onClick={() => navigation(`/product/${product.id}`)}
             >
               Check Details
             </Button>

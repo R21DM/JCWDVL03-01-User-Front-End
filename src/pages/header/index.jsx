@@ -40,21 +40,21 @@ function NavigationBar() {
   const [keep, setKeep] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement("script");
+    // const script = document.createElement("script");
     // check token
     const TOKEN = localStorage.getItem("token");
     if (TOKEN) {
       setIsSignIn(true);
     }
 
-    script.src = "assets/js/main.js";
-    script.async = true;
+    // script.src = "/assets/js/main.js";
+    // script.async = true;
 
-    document.body.appendChild(script);
+    // document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
-    };
+    // return () => {
+    //   document.body.removeChild(script);
+    // };
   }, []);
 
   useEffect(() => {
@@ -192,7 +192,7 @@ function NavigationBar() {
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-center">
           <a className="logo me-auto">
-            <img src="assets/img/logo.png" alt="" />
+            <img src="/assets/img/logo.png" alt="" />
           </a>
 
           <Navbar expand="lg" className="nav-container">

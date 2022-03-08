@@ -24,7 +24,7 @@ function Main() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
-        <Route path="/detail" element={<Product_Detail />} />
+        <Route path="/product/:id" element={<Product_Detail />} />
         <Route
           path="/cart"
           // element={user.id ? <Cart /> : <Navigate to="/" />}
