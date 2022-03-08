@@ -16,12 +16,12 @@ const getProducts = (param) => {
         param === "" ? "/products/get" : `/products/get?name=%${param}%`;
 
       if (category) {
-        query = `/products/get?name=%${search}%&unit=${
+        query = `/products/get?name=%${search}%&type=${
           category === "" ? "" : category
         }`;
 
         if (minPrice) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }
@@ -30,7 +30,7 @@ const getProducts = (param) => {
         query = `/products/get?name=%${search}%&minPrice=${minPrice}`;
 
         if (category) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }
@@ -48,25 +48,25 @@ const categoryProducts = (x) => {
   return async (dispatch) => {
     try {
       category = x;
-      let query = x === "" ? `/products/get` : `/products/get?unit=${category}`;
+      let query = x === "" ? `/products/get` : `/products/get?type=${category}`;
       if (search) {
-        query = `/products/get?name=%${search}%&unit=${
+        query = `/products/get?name=%${search}%&type=${
           category === "" ? "" : category
         }`;
 
         if (minPrice) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }
       }
       if (minPrice) {
-        query = `/products/get?unit=${
+        query = `/products/get?type=${
           category === "" ? "" : category
         }&minPrice=${minPrice}`;
 
         if (search) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }
@@ -93,18 +93,18 @@ const minPriceFilter = (x) => {
         query = `/products/get?name=%${search}%&minPrice=${x}`;
 
         if (category) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }
       }
       if (category) {
-        query = `/products/get?unit=${
+        query = `/products/get?type=${
           category === "" ? "" : category
         }&minPrice=${minPrice}`;
 
         if (search) {
-          query = `/products/get?name=%${search}%&unit=${
+          query = `/products/get?name=%${search}%&type=${
             category === "" ? "" : category
           }&minPrice=${minPrice}`;
         }

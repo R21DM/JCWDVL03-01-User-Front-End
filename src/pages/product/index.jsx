@@ -22,8 +22,8 @@ function Product(props) {
   const navigation = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [liquid, setLiquid] = useState(true);
-  const [solid, setSolid] = useState(true);
+  const [syringe, setSyringe] = useState(true);
+  const [pill, setPill] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -89,23 +89,23 @@ function Product(props) {
                   className="form-check-input"
                   type="checkbox"
                   id="flexRadioDefault2"
-                  checked={liquid}
+                  checked={syringe}
                   onChange={() => {
-                    setLiquid(!liquid);
-                    console.log("Liquid", !liquid);
-                    console.log("solid", solid);
-                    if (!liquid) {
-                      if (solid && !liquid) {
+                    setSyringe(!syringe);
+                    console.log("syringe", !syringe);
+                    console.log("pill", pill);
+                    if (!syringe) {
+                      if (pill && !syringe) {
                         return dispatch(categoryProducts(""));
                       }
-                      dispatch(categoryProducts("ml"));
-                    } else if (!solid && liquid) {
-                      dispatch(categoryProducts(""));
-                    } else dispatch(categoryProducts("mg"));
+                      dispatch(categoryProducts("Syringe"));
+                    } else if (!pill && syringe) {
+                      dispatch(categoryProducts("none"));
+                    } else dispatch(categoryProducts("pill"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault2">
-                  Liquid
+                  Syringe
                 </label>
               </div>
 
@@ -114,23 +114,23 @@ function Product(props) {
                   className="form-check-input"
                   type="checkbox"
                   id="flexRadioDefault3"
-                  checked={solid}
+                  checked={pill}
                   onChange={() => {
-                    setSolid(!solid);
-                    console.log("Liquid", liquid);
-                    console.log("solid", !solid);
-                    if (!solid) {
-                      if (!solid && liquid) {
+                    setPill(!pill);
+                    console.log("syringe", syringe);
+                    console.log("pill", !pill);
+                    if (!pill) {
+                      if (!pill && syringe) {
                         return dispatch(categoryProducts(""));
                       }
-                      dispatch(categoryProducts("mg"));
-                    } else if (solid && !liquid) {
-                      dispatch(categoryProducts(""));
-                    } else dispatch(categoryProducts("ml"));
+                      dispatch(categoryProducts("pill"));
+                    } else if (pill && !syringe) {
+                      dispatch(categoryProducts("none"));
+                    } else dispatch(categoryProducts("Syringe"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault3">
-                  Solid
+                  Pill
                 </label>
               </div>
             </div>
