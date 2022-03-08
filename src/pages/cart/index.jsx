@@ -10,7 +10,6 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartData } from "../../actions/cart-actions";
-import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
@@ -24,19 +23,23 @@ function Cart() {
       cart: state.cart.data,
     };
   });
-  const user = useSelector((state) => state.user);
-  const id = user.id;
-  const username = user.username;
+  const { user } = useSelector((state) => {
+    return {
+      user: state.user,
+    };
+  });
 
   //Variable Name
-  const [editQty, setEditQty] = useState("");
   const [page, setPage] = useState(1);
   const [editableItem, setEditableItem] = useState({});
+  const [indexStartItem, setIndexStartItem] = useState(0);
 
   //Pagination control
-  let active = page;
-  let items = [];
-  for (let number = 1; number <= 5; number++) {
+  const active = page;
+  const items = [];
+  const itemPerPage = 3;
+  const endPageNumber = Math.ceil(cart.result.length / itemPerPage);
+  for (let number = 1; number <= endPageNumber; number++) {
     items.push(
       <Pagination.Item
         onClick={() => setPage(number)}
@@ -49,78 +52,88 @@ function Cart() {
   }
 
   useEffect(() => {
-    //Get cart data
+    //Get cart data by user id
     dispatch(getCartData(1));
 
     //Check user data
     console.log("cart:", cart);
-    console.log("id", id);
-    console.log("username:", username);
+    console.log("user:", user);
   }, []);
 
+  useEffect(() => {
+    //Set pagination
+    const startIndex = 0 + itemPerPage * (page - 1);
+    setIndexStartItem(startIndex);
+
+    //Check page
+    console.log("current page:", page);
+  }, [page]);
+
   const renderCartItems = () => {
-    return cart.result.map((cart_item) => {
-      return (
-        <div id={cart_item.id} className="mx-auto d-flex flex-row py-1">
-          <img className="img-cart" src={`images/${cart_item.name}.jpg`} />
-          <Card className="w-80 mx-2" style={{ width: "90vw" }}>
-            <Card.Body className="d-flex flex-row justify-content-between">
-              <Card.Title>
-                {cart_item.name} x{cart_item.qty}
-              </Card.Title>
-              <Card.Title>
-                Rp {cart_item.total_price.toLocaleString("in-ID")},-
-              </Card.Title>
-              {editableItem[cart_item.id] ? (
-                <ButtonGroup className="me-2" aria-label="First group">
-                  <Button variant="secondary">+</Button>{" "}
-                  <Button variant="secondary">-</Button>{" "}
+    return cart.result
+      .slice(indexStartItem, indexStartItem + itemPerPage)
+      .map((cart_item) => {
+        return (
+          <div id={cart_item.id} className="mx-auto d-flex flex-row py-1">
+            <img className="img-cart" src={`images/${cart_item.name}.jpg`} />
+            <Card className="w-80 mx-2" style={{ width: "90vw" }}>
+              <Card.Body className="d-flex flex-row justify-content-between">
+                <Card.Title>
+                  {cart_item.name} x{cart_item.qty}
+                </Card.Title>
+                <Card.Title>
+                  Rp {cart_item.total_price.toLocaleString("in-ID")},-
+                </Card.Title>
+                {editableItem[cart_item.id] ? (
+                  <ButtonGroup className="me-2" aria-label="First group">
+                    <Button variant="secondary">+</Button>{" "}
+                    <Button variant="secondary">-</Button>{" "}
+                    <Button
+                      variant="secondary"
+                      onClick={() =>
+                        setEditableItem({
+                          ...editableItem,
+                          [cart_item.id]: false,
+                        })
+                      }
+                    >
+                      OK
+                    </Button>{" "}
+                    <Button
+                      variant="secondary"
+                      onClick={() =>
+                        setEditableItem({
+                          ...editableItem,
+                          [cart_item.id]: false,
+                        })
+                      }
+                    >
+                      Cancel
+                    </Button>
+                  </ButtonGroup>
+                ) : (
                   <Button
                     variant="secondary"
                     onClick={() =>
                       setEditableItem({
                         ...editableItem,
-                        [cart_item.id]: false,
+                        [cart_item.id]: true,
                       })
                     }
                   >
-                    OK
-                  </Button>{" "}
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      setEditableItem({
-                        ...editableItem,
-                        [cart_item.id]: false,
-                      })
-                    }
-                  >
-                    Cancel
+                    Edit
                   </Button>
-                </ButtonGroup>
-              ) : (
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    setEditableItem({
-                      ...editableItem,
-                      [cart_item.id]: true,
-                    })
-                  }
-                >
-                  Edit
-                </Button>
-              )}
-            </Card.Body>
-          </Card>
-          {editableItem[cart_item.id] ? null : (
-            <Button variant="primary" className="py-3 px-5">
-              Delete
-            </Button>
-          )}
-        </div>
-      );
-    });
+                )}
+              </Card.Body>
+            </Card>
+            {editableItem[cart_item.id] ? null : (
+              <Button variant="primary" className="py-3 px-5">
+                Delete
+              </Button>
+            )}
+          </div>
+        );
+      });
   };
 
   //Render webpage
@@ -132,9 +145,15 @@ function Cart() {
       <div>{renderCartItems()}</div>
       <div className="d-flex justify-content-center py-2">
         <Pagination>
-          <Pagination.Prev />
+          <Pagination.Prev
+            disabled={page == 1 ? true : false}
+            onClick={() => setPage(page - 1)}
+          />
           {items}
-          <Pagination.Next />
+          <Pagination.Next
+            disabled={page == endPageNumber ? true : false}
+            onClick={() => setPage(page + 1)}
+          />
         </Pagination>
       </div>
       <br />

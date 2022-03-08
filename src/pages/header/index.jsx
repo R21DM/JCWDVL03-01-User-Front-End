@@ -40,21 +40,11 @@ function NavigationBar() {
   const [keep, setKeep] = useState(false);
 
   useEffect(() => {
-    // const script = document.createElement("script");
     // check token
     const TOKEN = localStorage.getItem("token");
     if (TOKEN) {
       setIsSignIn(true);
     }
-
-    // script.src = "/assets/js/main.js";
-    // script.async = true;
-
-    // document.body.appendChild(script);
-
-    // return () => {
-    //   document.body.removeChild(script);
-    // };
   }, []);
 
   useEffect(() => {
