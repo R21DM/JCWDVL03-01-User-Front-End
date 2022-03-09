@@ -133,8 +133,6 @@ function NavigationBar() {
     setError2(false);
     Axios.get(API_URL + `/users/get?email=${email}`)
       .then((respond) => {
-        console.log(respond.data);
-
         // if error -> show error
         if (!respond.data.length) {
           setError2(true);
@@ -144,16 +142,12 @@ function NavigationBar() {
         }
 
         Axios.get(API_URL + `/users/send?email=${email}`)
-          .then((respond) => {
-            console.log(respond.data);
-          })
+          .then((respond) => {})
           .catch((error) => console.log(error));
 
         setLoading(false);
 
         setConfirm(true);
-
-        console.log(user);
       })
       .catch((error) => console.log(error));
   };
