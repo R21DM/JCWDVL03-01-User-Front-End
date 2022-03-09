@@ -1,7 +1,5 @@
-.nav {
-  display: flex;
-  flex-direction: row;
-  margin-right: -18%;
+.nav2 {
+  display: contents;
 }
 .nav-container {
   display: flex;
@@ -171,14 +169,12 @@
 }
 @media only screen and (max-width: 1200px) {
   .search {
-    height: auto;
     width: 20vw;
     margin-right: 2vw;
   }
 }
 @media only screen and (max-width: 990px) {
   .search {
-    height: auto;
     width: 22vw;
     margin-right: 2vw;
     margin-left: 2vw;
@@ -187,7 +183,6 @@
 @media only screen and (max-width: 840px) {
   .search {
     width: 30vw;
-    height: auto;
     margin-right: 2vw;
     margin-left: 3vw;
   }

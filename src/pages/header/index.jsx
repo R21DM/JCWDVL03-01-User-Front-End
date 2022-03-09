@@ -196,7 +196,7 @@ function NavigationBar() {
                   navbarScroll
                 ></Nav>
                 <Nav.Item style={{ marginRight: 10 }}></Nav.Item>
-                <div className="nav">
+                <div className="nav2">
                   {/* ------------------------------------- Search -------------------------------------*/}
 
                   <Form className="d-flex search">
@@ -232,7 +232,7 @@ function NavigationBar() {
                       Login
                     </Button>
                   ) : isSignIn ? (
-                    <div>
+                    <div style={{ display: "flex" }}>
                       <Button
                         variant="outline-info"
                         className="button"
