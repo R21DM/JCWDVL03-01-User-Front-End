@@ -21,7 +21,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 function NavigationBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  console.log(user);
 
   // state
   const [username, setUserName] = useState("");
@@ -33,6 +34,7 @@ function NavigationBar() {
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalforgot, setModalForgot] = useState(false);
@@ -95,14 +97,12 @@ function NavigationBar() {
 
         setLoading(false);
         setIsSignIn(true);
+        respond.data[0].role === 1 ? setIsAdmin(true) : setIsAdmin(false);
         setShow(false);
 
         if (!keep) {
           window.onbeforeunload = localStorage.removeItem("token");
         }
-
-        // if success
-
         console.log(user);
       })
       .catch((error) => {
@@ -116,6 +116,7 @@ function NavigationBar() {
     setModal(true);
   };
   const onButtonUserConfirm = () => {
+    setIsAdmin(false);
     // clear local storage
     localStorage.removeItem("token");
 
@@ -212,19 +213,15 @@ function NavigationBar() {
                   </Form>
 
                   {/* ------------------------------------- Navigate -------------------------------------*/}
-
-                  <Nav.Link onClick={() => navigate("")}>Home</Nav.Link>
-
-                  <Nav.Link onClick={() => navigate("product")}>
-                    Products
-                  </Nav.Link>
-                  <a className="nav-link scrollto" href="#services">
-                    Services
-                  </a>
-
-                  <a className="nav-link scrollto" href="#contact">
-                    Contact
-                  </a>
+                  <div style={{ display: "flex" }}>
+                    <Nav.Link onClick={() => navigate("")}>Home</Nav.Link>
+                    <Nav.Link onClick={() => navigate("product")}>
+                      Products
+                    </Nav.Link>
+                    <a className="nav-link scrollto" href="#contact">
+                      Contact
+                    </a>
+                  </div>
 
                   {!isSignIn ? (
                     <Button
@@ -234,6 +231,23 @@ function NavigationBar() {
                     >
                       Login
                     </Button>
+                  ) : isSignIn ? (
+                    <div>
+                      <Button
+                        variant="outline-info"
+                        className="button"
+                        onClick={() => navigate("/cart")}
+                      >
+                        Cart
+                      </Button>
+                      <Button
+                        variant="outline-success"
+                        onClick={onButtonLogout}
+                        className="register-btn"
+                      >
+                        Logout
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       variant="outline-success"
@@ -243,6 +257,15 @@ function NavigationBar() {
                       Logout
                     </Button>
                   )}
+                  {!isSignIn ? (
+                    <Button
+                      variant="outline-info "
+                      className="register-btn"
+                      onClick={() => navigate("/register")}
+                    >
+                      Register
+                    </Button>
+                  ) : null}
                 </div>
               </Navbar.Collapse>
             </Container>

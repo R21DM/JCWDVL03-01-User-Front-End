@@ -216,11 +216,20 @@
   margin-right: 16%;
   color: rgb(63, 187, 192);
 }
-
-/* .search {
-  width: 30vw;
-  margin-right: 2vw;
-} */
+.register-btn {
+  margin-left: 0.5vw;
+  color: white;
+  background-color: rgb(63, 187, 192);
+  border: 1;
+  border-radius: 7px;
+  border-color: rgb(63, 187, 192);
+}
+.register-btn:hover {
+  color: rgb(63, 187, 192);
+  background-color: white;
+  border-color: turquoise;
+  border-radius: 7px;
+}
 
 .forgetpw {
   margin-right: 35%;
