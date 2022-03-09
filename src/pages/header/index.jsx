@@ -15,7 +15,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/product-actions";
 import "../header/style.css";
-import { LOGOUT } from "../../actions/types";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -42,6 +41,7 @@ function NavigationBar() {
   const [keep, setKeep] = useState(false);
 
   useEffect(() => {
+    const script = document.createElement("script");
     // check token
     const TOKEN = localStorage.getItem("token");
     if (TOKEN) {
@@ -58,14 +58,6 @@ function NavigationBar() {
     };
   }, []);
 
-  useEffect(() => {
-    // Check Sign In
-    if (user.signIn) {
-      signIn();
-      dispatch({ type: LOGOUT });
-    }
-  });
-
   const close = () => {
     setModalForgot(false);
     setShow(true);
@@ -77,10 +69,6 @@ function NavigationBar() {
   };
   const closeLogin = () => {
     setShow(false);
-  };
-
-  const signIn = () => {
-    setShow(user.signIn);
   };
 
   const onButtonLogin = () => {

@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 import { SIGN_IN } from "../../actions/types";
 
-const URL = "http://localhost:8000";
+const URL = process.env.REACT_APP_API_URL;
 
 function Register() {
   //Redux state

@@ -4,7 +4,7 @@ import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
-const URL = "http://localhost:8000";
+const URL = process.env.REACT_APP_API_URL;
 
 const Verify = () => {
   //Get data from query params

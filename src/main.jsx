@@ -13,22 +13,24 @@ import Product_Detail from "./pages/products-detail";
 import Cart from "./pages/cart";
 
 function Main() {
-  <div className="main-container">
-    <Navbar />
-    <Routes>
-      <Route path="/register" element={<Register />} />
-      <Route path="/verify" element={<Verify />} />
-      <Route path="/product" element={<Product />} />
-      <Route path="/product/:id" element={<Product_Detail />} />
-      <Route
-        path="/cart"
-        // element={user.id ? <Cart /> : <Navigate to="/" />}
-        element={<Cart />}
-      />
-      <Route path="/" element={<Home />} />
-    </Routes>
-    <Footer />
-  </div>;
+  return (
+    <div className="main-container">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verify />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/product/:id" element={<Product_Detail />} />
+        <Route
+          path="/cart"
+          // element={user.id ? <Cart /> : <Navigate to="/" />}
+          element={<Cart />}
+        />
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
 
 export default Main;

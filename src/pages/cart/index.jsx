@@ -13,7 +13,7 @@ import { getCartData } from "../../actions/cart-actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function Cart() {
   //Redux state
@@ -75,7 +75,10 @@ function Cart() {
       .map((cart_item) => {
         return (
           <div id={cart_item.id} className="mx-auto d-flex flex-row py-1">
-            <img className="img-cart" src={`images/${cart_item.name}.jpg`} />
+            <img
+              className="img-cart"
+              src={`http://localhost:2000/products/${cart_item.name}.jpg`}
+            />
             <Card className="w-80 mx-2" style={{ width: "90vw" }}>
               <Card.Body className="d-flex flex-row justify-content-between">
                 <Card.Title>

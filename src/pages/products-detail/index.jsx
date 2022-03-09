@@ -14,7 +14,7 @@ import {
 } from "react-bootstrap";
 import "./style.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function Product_Detail() {
   //Redux state
@@ -46,7 +46,9 @@ function Product_Detail() {
         setProduct_unit(res.data[0].unit);
         setProduct_brand(res.data[0].brand);
         setProduct_class(res.data[0].drug_class);
-        setProduct_image(`/images/${res.data[0].name}.jpg`);
+        setProduct_image(
+          `http://localhost:2000/products/${res.data[0].name}.jpg`
+        );
         setProduct_desc(res.data[0].description);
         setProduct_dosage(res.data[0].dosage);
         setProduct_warning(res.data[0].before_taking);
