@@ -1,0 +1,19 @@
+.cart-container {
+  margin-top: 12%;
+  height: auto;
+  background-color: white;
+}
+
+.center-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-cart {
+  display: block;
+  max-width: 127px;
+  max-height: 95px;
+  width: auto;
+  height: auto;
+}

@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "../actions/types";
+import { LOGIN, LOGOUT, SIGN_IN } from "../actions/types";
 
 var INITIAL_STATE = {
   id: null,
@@ -6,6 +6,7 @@ var INITIAL_STATE = {
   username: "",
   email: "",
   phone: null,
+  signIn: false,
 };
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -30,8 +31,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
         email: "",
         phone: null,
       });
+
+    case SIGN_IN:
+      return {
+        ...state,
+        signIn: true,
+      };
     default:
-      return state;
+      return INITIAL_STATE;
   }
 };
 
