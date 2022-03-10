@@ -77,7 +77,7 @@ function Cart() {
           <div id={cart_item.id} className="mx-auto d-flex flex-row py-1">
             <img
               className="img-cart"
-              src={`http://localhost:2000/products/${cart_item.name}.jpg`}
+              src={`${API_URL}/products/${cart_item.name}.jpg`}
             />
             <Card className="w-80 mx-2" style={{ width: "90vw" }}>
               <Card.Body className="d-flex flex-row justify-content-between">

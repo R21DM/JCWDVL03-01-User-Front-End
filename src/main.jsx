@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 
@@ -13,6 +14,12 @@ import Product_Detail from "./pages/products-detail";
 import Cart from "./pages/cart";
 
 function Main() {
+  const { user } = useSelector((state) => {
+    return {
+      user: state.user,
+    };
+  });
+
   return (
     <div className="main-container">
       <Navbar />
@@ -24,8 +31,7 @@ function Main() {
         <Route path="/product/:id" element={<Product_Detail />} />
         <Route
           path="/cart"
-          // element={user.id ? <Cart /> : <Navigate to="/" />}
-          element={<Cart />}
+          element={user.id ? <Cart /> : <Navigate to="/" />}
         />
       </Routes>
       <Footer />

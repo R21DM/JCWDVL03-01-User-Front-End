@@ -43,7 +43,7 @@ function Product(props) {
         <Card key={product.id} id="product-card">
           <Card.Img
             variant="top"
-            src={`http://localhost:2000/products/${product.name}.jpg`}
+            src={`${API_URL}/products/${product.name}.jpg`}
             style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
             width="50%"
             height="50%"
