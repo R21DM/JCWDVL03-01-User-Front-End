@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Image,
   Tabs,
@@ -11,13 +11,17 @@ import {
   Form,
   InputGroup,
   FormControl,
+  Modal,
+  Spinner,
 } from "react-bootstrap";
 import "./style.css";
+import { SIGN_IN } from "../../actions/types";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Product_Detail() {
   //Redux state
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   //Get data from query params
@@ -36,7 +40,18 @@ function Product_Detail() {
   const [product_warning, setProduct_warning] = useState("Null");
   // const[(product, setProduct)] = setState({});
 
+  //Set Loading & Modal
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [addCart, setAddCart] = useState(false);
+
+  //Loading & Modal Handler
+  const handleCloseModal = () => setShowModal(false);
+
   useEffect(() => {
+    //Check user
+    console.log(user);
+
     //Load product details data
     Axios.get(API_URL + `/products/get`, { params: { id } })
       .then((res) => {
@@ -77,7 +92,7 @@ function Product_Detail() {
   const addToCart = () => {
     //Cart Data
     const cartData = {
-      userId: 1,
+      userId: user.id,
       productId: id,
       qty: order_qty,
       price: product_price * 1000,
@@ -88,9 +103,17 @@ function Product_Detail() {
     //POST data to back-end
     Axios.post(API_URL + "/cart", cartData)
       .then((respond) => {
+        setAddCart(true);
+        setLoading(false);
+        setShowModal(true);
         console.log("respond", respond);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setAddCart(false);
+        setLoading(false);
+        setShowModal(true);
+        console.log(error);
+      });
   };
 
   return (
@@ -170,106 +193,127 @@ function Product_Detail() {
                     </div>
                     <div className="product-price-details">
                       <p className="text-right">{product_desc}</p>
-                      <div className=" d-flex justify-content-center">
-                        <a className="shipping" href="#">
-                          <span> </span>Free shipping
-                        </a>
-                      </div>
                       {/* Add To Cart */}
-                      <div className="d-flex flex-row w-100 bg-dark">
-                        <div className="mx-2 my-2 d-flex w-100 justify-content-center">
-                          <div className="d-flex flex-column align-items-center">
-                            <div className="text-info mb-1">Quantity</div>
-                            <div className="d-flex flex-row">
-                              <ButtonGroup
-                                className="py-4"
-                                aria-label="Subtraction"
-                              >
-                                <Button
-                                  variant="outline-primary"
-                                  onClick={() => subtract_10()}
-                                  disabled={order_qty <= 10 ? true : false}
-                                >
-                                  -10
-                                </Button>
-                                <Button
-                                  variant="primary"
-                                  onClick={() => subtract_1()}
-                                  disabled={order_qty <= 1 ? true : false}
-                                >
-                                  -
-                                </Button>
-                              </ButtonGroup>
-                              <Form>
-                                <Form.Group
-                                  className="mb-3 mx-2 text-info d-flex flex-column align-items-center"
-                                  controlId="exampleForm.ControlInput1"
-                                >
-                                  <InputGroup>
-                                    <FormControl
-                                      type="text"
-                                      placeholder="1"
-                                      value={order_qty}
-                                      readOnly
-                                    />
-                                    <InputGroup.Text id="basic-addon">
-                                      {product_unit}
-                                    </InputGroup.Text>
-                                  </InputGroup>
-                                  <InputGroup>
-                                    <InputGroup.Text id="total-price">
-                                      Rp
-                                    </InputGroup.Text>
-                                    <FormControl
-                                      type="text"
-                                      placeholder="Total Price"
-                                      value={
-                                        (
-                                          order_qty *
-                                          product_price *
-                                          1000
-                                        ).toLocaleString("in-ID") + ",-"
-                                      }
-                                      readOnly
-                                    />
-                                  </InputGroup>
-                                </Form.Group>
-                              </Form>
-                              <ButtonGroup
-                                className="py-4"
-                                aria-label="Addition"
-                              >
-                                <Button
-                                  variant="primary"
-                                  onClick={() => add_1()}
-                                >
-                                  +
-                                </Button>
-                                <Button
-                                  variant="outline-primary"
-                                  onClick={() => add_10()}
-                                >
-                                  +10
-                                </Button>
-                              </ButtonGroup>
+                      {user.id ? (
+                        <>
+                          <div className="d-flex flex-row w-100 bg-dark">
+                            <div className="mx-2 my-2 d-flex w-100 justify-content-center">
+                              <div className="d-flex flex-column align-items-center">
+                                <div className="text-info mb-1">Quantity</div>
+                                <div className="d-flex flex-row">
+                                  <ButtonGroup
+                                    className="py-4"
+                                    aria-label="Subtraction"
+                                  >
+                                    <Button
+                                      variant="outline-primary"
+                                      onClick={() => subtract_10()}
+                                      disabled={order_qty <= 10 ? true : false}
+                                    >
+                                      -10
+                                    </Button>
+                                    <Button
+                                      variant="primary"
+                                      onClick={() => subtract_1()}
+                                      disabled={order_qty <= 1 ? true : false}
+                                    >
+                                      -
+                                    </Button>
+                                  </ButtonGroup>
+                                  <Form>
+                                    <Form.Group
+                                      className="mb-3 mx-2 text-info d-flex flex-column align-items-center"
+                                      controlId="exampleForm.ControlInput1"
+                                    >
+                                      <InputGroup>
+                                        <FormControl
+                                          type="text"
+                                          placeholder="1"
+                                          value={order_qty}
+                                          readOnly
+                                        />
+                                        <InputGroup.Text id="basic-addon">
+                                          {product_unit}
+                                        </InputGroup.Text>
+                                      </InputGroup>
+                                      <InputGroup>
+                                        <InputGroup.Text id="total-price">
+                                          Rp
+                                        </InputGroup.Text>
+                                        <FormControl
+                                          type="text"
+                                          placeholder="Total Price"
+                                          value={
+                                            (
+                                              order_qty *
+                                              product_price *
+                                              1000
+                                            ).toLocaleString("in-ID") + ",-"
+                                          }
+                                          readOnly
+                                        />
+                                      </InputGroup>
+                                    </Form.Group>
+                                  </Form>
+                                  <ButtonGroup
+                                    className="py-4"
+                                    aria-label="Addition"
+                                  >
+                                    <Button
+                                      variant="primary"
+                                      onClick={() => add_1()}
+                                    >
+                                      +
+                                    </Button>
+                                    <Button
+                                      variant="outline-primary"
+                                      onClick={() => add_10()}
+                                    >
+                                      +10
+                                    </Button>
+                                  </ButtonGroup>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="add-cart-btn d-flex py-3 justify-content-center bg-dark">
+                          <div className="add-cart-btn d-flex py-3 justify-content-center bg-dark">
+                            <Button
+                              variant="danger"
+                              className="d-flex flex-column mx-1 px-5"
+                              onClickCapture={addToCart}
+                              disabled={loading}
+                              onClick={() => setLoading(true)}
+                            >
+                              {loading ? (
+                                <div className="d-flex mx-3">
+                                  <Spinner animation="border" variant="light" />
+                                </div>
+                              ) : (
+                                <>
+                                  <Image
+                                    className="d-flex fluid center"
+                                    src="/assets/img/cart-icon.png"
+                                    alt="add-to-cart"
+                                  />
+                                  Add to Cart
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
                         <Button
                           variant="danger"
-                          className="d-flex flex-column mx-1"
-                          onClick={addToCart}
+                          className="d-flex flex-row w-100 mx-auto my-auto justify-content-center align-items-center"
+                          onClick={() => dispatch({ type: SIGN_IN })}
                         >
                           <Image
-                            className="d-flex fluid center"
+                            className="fluid"
                             src="/assets/img/cart-icon.png"
-                            alt="add-to-cart"
                           />
-                          Add to Cart
+                          <h4 className="text-light my-auto">Start Shopping</h4>
                         </Button>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -302,14 +346,36 @@ function Product_Detail() {
               </div>
             </div>
           </div>
-          {/* <!----content----> */}
-          <div className="clearfix"> </div>
-          {/* <!----footer---> */}
-          <div className="clearfix"> </div>
-          {/* <!---//footer---> */}
         </div>
         {/* <!----container----> */}
       </div>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        {addCart ? (
+          <div>
+            <Modal.Header closeButton>
+              <Modal.Title>Product Added to Cart</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>This product have been added to your cart.</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </div>
+        ) : (
+          <div>
+            <Modal.Header closeButton>
+              <Modal.Title>Error</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Sorry, something went wrong.</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

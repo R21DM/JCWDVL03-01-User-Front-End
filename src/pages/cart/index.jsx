@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Form,
   Button,
@@ -7,6 +8,7 @@ import {
   Row,
   ButtonGroup,
   Pagination,
+  Image,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartData } from "../../actions/cart-actions";
@@ -53,7 +55,7 @@ function Cart() {
 
   useEffect(() => {
     //Get cart data by user id
-    dispatch(getCartData(1));
+    dispatch(getCartData(user.id));
 
     //Check user data
     console.log("cart:", cart);
@@ -142,79 +144,90 @@ function Cart() {
   //Render webpage
   return (
     <div className="container cart-container py-2">
-      <div>
-        <h2>Cart Items</h2>
-      </div>
-      <div>{renderCartItems()}</div>
-      <div className="d-flex justify-content-center py-2">
-        <Pagination>
-          <Pagination.Prev
-            disabled={page == 1 ? true : false}
-            onClick={() => setPage(page - 1)}
-          />
-          {items}
-          <Pagination.Next
-            disabled={page == endPageNumber ? true : false}
-            onClick={() => setPage(page + 1)}
-          />
-        </Pagination>
-      </div>
-      <br />
-      <div>
-        <Card border="secondary" className="mx-auto px-3 py-3 bg-light">
-          <Form>
-            <Form.Group as={Row} className="mb-3">
-              <h4>Checkout</h4>
-              <Form.Label column sm="2">
-                Total Price
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control
-                  plaintext
-                  readOnly
-                  defaultValue="Rp NaN,-"
-                  className="fw-bold"
-                  value={`Rp ${cart.totalPrice.toLocaleString("in-ID")},-`}
-                />
-              </Col>
-            </Form.Group>
-            <br />
-            <h4>Address</h4>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="2">
-                Delivery Address
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control
-                  type="text"
-                  placeholder="Enter delivery address"
-                />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="2">
-                City
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control type="text" placeholder="Enter city name" />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="2">
-                Postal Code / ZIP
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control
-                  type="text"
-                  placeholder="Enter postal code / ZIP"
-                />
-              </Col>
-            </Form.Group>
-          </Form>
+      {cart.totalPrice ? (
+        <>
+          <div>
+            <h2>Cart Items</h2>
+          </div>
+          <div>{renderCartItems()}</div>
+          <div className="d-flex justify-content-center py-2">
+            <Pagination>
+              <Pagination.Prev
+                disabled={page == 1 ? true : false}
+                onClick={() => setPage(page - 1)}
+              />
+              {items}
+              <Pagination.Next
+                disabled={page == endPageNumber ? true : false}
+                onClick={() => setPage(page + 1)}
+              />
+            </Pagination>
+          </div>
           <br />
-          <Button>Proceed to Payment</Button>
-        </Card>
-      </div>
+          <div>
+            <Card border="secondary" className="mx-auto px-3 py-3 bg-light">
+              <Form>
+                <Form.Group as={Row} className="mb-3">
+                  <h4>Checkout</h4>
+                  <Form.Label column sm="2">
+                    Total Price
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control
+                      plaintext
+                      readOnly
+                      defaultValue="Rp NaN,-"
+                      className="fw-bold"
+                      value={`Rp ${cart.totalPrice.toLocaleString("in-ID")},-`}
+                    />
+                  </Col>
+                </Form.Group>
+                <br />
+                <h4>Address</h4>
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm="2">
+                    Delivery Address
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter delivery address"
+                    />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm="2">
+                    City
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control type="text" placeholder="Enter city name" />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm="2">
+                    Postal Code / ZIP
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter postal code / ZIP"
+                    />
+                  </Col>
+                </Form.Group>
+              </Form>
+              <br />
+              <Button>Proceed to Payment</Button>
+            </Card>
+          </div>
+        </>
+      ) : (
+        <div className="d-flex flex-column">
+          <Image className="mx-auto fluid" src={`/images/empty-cart.png`} />
+          <Link to="/product" className="mx-auto">
+            <h4>Start shopping here</h4>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

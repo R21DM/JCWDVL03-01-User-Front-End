@@ -69,6 +69,7 @@ function NavigationBar() {
   };
   const closeLogin = () => {
     setShow(false);
+    dispatch({ type: "SIGN_OFF" });
   };
 
   const onButtonLogin = () => {
@@ -272,7 +273,11 @@ function NavigationBar() {
 
             {/* ------------------------------------- Login -------------------------------------*/}
 
-            <Modal show={show} onHide={closeLogin} className="modal-size">
+            <Modal
+              show={show || user.signIn}
+              onHide={closeLogin}
+              className="modal-size"
+            >
               <Modal.Header className="modal-header">
                 <Modal.Title className="center title">Login</Modal.Title>
               </Modal.Header>
