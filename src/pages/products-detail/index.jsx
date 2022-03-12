@@ -57,7 +57,7 @@ function Product_Detail() {
       .then((res) => {
         console.log(res.data);
         setProduct_name(res.data[0].name);
-        setProduct_price(res.data[0].price.toLocaleString("in-ID"));
+        setProduct_price(res.data[0].price);
         setProduct_unit(res.data[0].unit);
         setProduct_brand(res.data[0].brand);
         setProduct_class(res.data[0].drug_class);
@@ -95,7 +95,7 @@ function Product_Detail() {
       userId: user.id,
       productId: id,
       qty: order_qty,
-      price: product_price * 1000,
+      price: product_price,
     };
 
     console.log(cartData);
@@ -188,7 +188,8 @@ function Product_Detail() {
                     <div className="product-price-left text-right w-100">
                       <h3>Current Price</h3>
                       <h5>
-                        Rp {product_price},-/{product_unit}
+                        Rp {product_price.toLocaleString("in-ID")},-/
+                        {product_unit}
                       </h5>
                     </div>
                     <div className="product-price-details">
@@ -245,9 +246,7 @@ function Product_Detail() {
                                           placeholder="Total Price"
                                           value={
                                             (
-                                              order_qty *
-                                              product_price *
-                                              1000
+                                              order_qty * product_price
                                             ).toLocaleString("in-ID") + ",-"
                                           }
                                           readOnly
