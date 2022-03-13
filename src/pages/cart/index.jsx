@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Form,
   Button,
@@ -19,6 +19,9 @@ import "./style.css";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Cart() {
+  //Declare navigate
+  const navigate = useNavigate();
+
   //Redux state
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => {
@@ -267,50 +270,15 @@ function Cart() {
                     Total Price
                   </Form.Label>
                   <Col sm="10">
-                    <Form.Control
-                      plaintext
-                      readOnly
-                      defaultValue="Rp NaN,-"
-                      className="fw-bold"
-                      value={`Rp ${cart.totalPrice.toLocaleString("in-ID")},-`}
-                    />
-                  </Col>
-                </Form.Group>
-                <br />
-                <h4>Address</h4>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm="2">
-                    Delivery Address
-                  </Form.Label>
-                  <Col sm="10">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter delivery address"
-                    />
-                  </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm="2">
-                    City
-                  </Form.Label>
-                  <Col sm="10">
-                    <Form.Control type="text" placeholder="Enter city name" />
-                  </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm="2">
-                    Postal Code / ZIP
-                  </Form.Label>
-                  <Col sm="10">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter postal code / ZIP"
-                    />
+                    <h5 defaultValue="Rp NaN,-">{`Rp ${cart.totalPrice.toLocaleString(
+                      "in-ID"
+                    )},-`}</h5>
                   </Col>
                 </Form.Group>
               </Form>
-              <br />
-              <Button>Proceed to Payment</Button>
+              <Button onClick={() => navigate("/payment")}>
+                Checkout Items
+              </Button>
             </Card>
           </div>
         </>
