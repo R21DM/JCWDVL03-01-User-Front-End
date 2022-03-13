@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Form,
-  Button,
-  Card,
-  Col,
-  Row,
-  ButtonGroup,
-  Pagination,
-  Image,
-} from "react-bootstrap";
+import { Button, Card, Pagination, Image } from "react-bootstrap";
 import Axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { getCartData } from "../../actions/cart-actions";
+import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
@@ -21,14 +11,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function History() {
   //Declare navigate
   const navigate = useNavigate();
-
   //Redux state
-  const dispatch = useDispatch();
-  const { cart } = useSelector((state) => {
-    return {
-      cart: state.cart.data,
-    };
-  });
   const { user } = useSelector((state) => {
     return {
       user: state.user,
@@ -39,8 +22,6 @@ function History() {
   const [page, setPage] = useState(1);
   const [history, setHistory] = useState([]);
   const [indexStartItem, setIndexStartItem] = useState(0);
-  const [itemCount, setItemCount] = useState(0);
-  const [editMode, setEditMode] = useState(false);
 
   //Pagination control
   const active = page;
@@ -95,7 +76,12 @@ function History() {
                 <Card.Title>{`Rp ${txn_item.total_price.toLocaleString(
                   "in-ID"
                 )},-`}</Card.Title>
-                <Button>Details</Button>
+                <Button
+                  id={txn_item.id}
+                  onClick={(e) => navigate(`/history/${e.target.id}`)}
+                >
+                  Details
+                </Button>
               </Card.Body>
             </Card>
           </div>
