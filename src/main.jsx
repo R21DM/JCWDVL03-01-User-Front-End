@@ -13,6 +13,7 @@ import Verify from "./pages/verify";
 import Product_Detail from "./pages/products-detail";
 import Cart from "./pages/cart";
 import Payment from "./pages/payment";
+import History from "./pages/history";
 
 function Main() {
   const { user } = useSelector((state) => {
@@ -37,6 +38,10 @@ function Main() {
         <Route
           path="/payment"
           element={user.id ? <Payment /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/history"
+          element={user.id ? <History /> : <Navigate to="/" />}
         />
       </Routes>
       <Footer />

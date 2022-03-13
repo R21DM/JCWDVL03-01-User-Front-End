@@ -243,8 +243,14 @@ function Cart() {
     <div className="container cart-container py-2">
       {cart.totalPrice ? (
         <>
-          <div>
+          <div className="d-flex justify-content-between">
             <h2>Cart Items</h2>
+            <div className="my-auto">
+              <Link
+                to="/history"
+                className="text-dark"
+              >{`Transaction History >>`}</Link>
+            </div>
           </div>
           <div>{renderCartItems()}</div>
           <div className="d-flex justify-content-center py-2">
@@ -288,6 +294,11 @@ function Cart() {
           <Link to="/product" className="mx-auto">
             <h4>Start shopping here</h4>
           </Link>
+
+          <h4 className="mx-auto">
+            {`or `}
+            <Link to="/history">see your transaction history here</Link>
+          </h4>
         </div>
       )}
     </div>
