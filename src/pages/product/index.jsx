@@ -7,7 +7,7 @@ import {
   categoryProducts,
   minPriceFilter,
 } from "../../actions/product-actions";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Form, Pagination } from "react-bootstrap";
 import "../product/style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -25,6 +25,30 @@ function Product(props) {
   const [syringe, setSyringe] = useState(true);
   const [pill, setPill] = useState(true);
 
+  //Pagination
+
+  //Variable Name
+  const [page, setPage] = useState(1);
+  const [editableItem, setEditableItem] = useState({});
+  const [indexStartItem, setIndexStartItem] = useState(0);
+
+  //Pagination control
+  const active = page;
+  const items = [];
+  const itemPerPage = 8;
+  const endPageNumber = Math.ceil(products.length / itemPerPage);
+  for (let number = 1; number <= endPageNumber; number++) {
+    items.push(
+      <Pagination.Item
+        onClick={() => setPage(number)}
+        key={number}
+        active={number === active}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+
   useEffect(() => {
     setLoading(true);
     Axios.get(API_URL + `/products/get`)
@@ -36,35 +60,46 @@ function Product(props) {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    //Set pagination
+    const startIndex = 0 + itemPerPage * (page - 1);
+    setIndexStartItem(startIndex);
+
+    //Check page
+    console.log("current page:", page);
+  }, [page]);
+
   const renderListProducts = () => {
     console.log("Productnya", products);
-    return products.map((product) => {
-      return (
-        <Card key={product.id} id="product-card">
-          <Card.Img
-            variant="top"
-            src={`http://localhost:2000/products/${product.name}.jpg`}
-            style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
-            width="50%"
-            height="50%"
-          />
-          <Card.Body className="card-body">
-            <Card.Title>{product.name}</Card.Title>
-            <Card.Text>
-              {"Rp. "}
-              {product.price}
-              {`/${product.unit}`}
-            </Card.Text>
-            <Button
-              variant="primary"
-              onClick={() => navigation(`/product/${product.id}`)}
-            >
-              Check Details
-            </Button>
-          </Card.Body>
-        </Card>
-      );
-    });
+    return products
+      .slice(indexStartItem, indexStartItem + itemPerPage)
+      .map((product) => {
+        return (
+          <Card key={product.id} id="product-card">
+            <Card.Img
+              variant="top"
+              src={`http://localhost:2000/products/${product.name}.jpg`}
+              style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
+              width="50%"
+              height="50%"
+            />
+            <Card.Body className="card-body">
+              <Card.Title>{product.name}</Card.Title>
+              <Card.Text>
+                {"Rp. "}
+                {product.price}
+                {`/${product.unit}`}
+              </Card.Text>
+              <Button
+                variant="primary"
+                onClick={() => navigation(`/product/${product.id}`)}
+              >
+                Check Details
+              </Button>
+            </Card.Body>
+          </Card>
+        );
+      });
   };
 
   return (
@@ -180,6 +215,20 @@ function Product(props) {
             </Form.Group>
           </div>
           <div className="body-feature-product">{renderListProducts()}</div>
+        </div>
+        {/* ---------Pagination---------- */}
+        <div className="d-flex justify-content-center py-2">
+          <Pagination>
+            <Pagination.Prev
+              disabled={page == 1 ? true : false}
+              onClick={() => setPage(page - 1)}
+            />
+            {items}
+            <Pagination.Next
+              disabled={page == endPageNumber ? true : false}
+              onClick={() => setPage(page + 1)}
+            />
+          </Pagination>
         </div>
       </main>
     </div>

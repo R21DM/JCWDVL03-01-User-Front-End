@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/product-actions";
+import { parseRes } from "../../util";
 import "../header/style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -29,7 +30,7 @@ function NavigationBar() {
   const [password, setPassWord] = useState("");
   const [search, setSearch] = useState("");
   const [email, setEmail] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [error2, setError2] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,6 +46,10 @@ function NavigationBar() {
     // check token
     const TOKEN = localStorage.getItem("token");
     if (TOKEN) {
+      setIsSignIn(true);
+    }
+    const KEY = sessionStorage.getItem("key");
+    if (KEY) {
       setIsSignIn(true);
     }
 
@@ -77,36 +82,33 @@ function NavigationBar() {
       .then((respond) => {
         console.log(respond.data);
 
-        // if error -> show error
-        if (!respond.data.length) {
-          setError(true);
-          setLoading(false);
-
-          return;
+        // save token or id in web storage
+        if (keep) {
+          localStorage.setItem("token", respond.data.token_data);
         }
 
-        // save token or id in web storage
-        localStorage.setItem("token", respond.data[0].token_data);
         // data user dijadikan JWTToken, bisa diubah jadi userdata
 
         // save data to global storage
         dispatch({
           type: "LOGIN",
-          payload: respond.data[0],
+          payload: respond.data,
         });
 
         setLoading(false);
         setIsSignIn(true);
-        respond.data[0].role === 1 ? setIsAdmin(true) : setIsAdmin(false);
+        respond.data.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
         setShow(false);
 
         if (!keep) {
-          window.onbeforeunload = localStorage.removeItem("token");
+          // window.onbeforeunload = localStorage.removeItem("token");
+          window.sessionStorage.setItem("key", respond.data.token_data);
         }
+
         console.log(user);
       })
       .catch((error) => {
-        setError(true);
+        setError(parseRes(error));
         setLoading(false);
         console.log(error);
       });
@@ -117,12 +119,14 @@ function NavigationBar() {
   };
   const onButtonUserConfirm = () => {
     setIsAdmin(false);
-    // clear local storage
+    // clear local storage & session storage
     localStorage.removeItem("token");
+    sessionStorage.removeItem("key");
 
     // clear global storage
     dispatch({ type: "LOGOUT" });
     setModal(false);
+    navigate("/");
     window.location.reload();
   };
   const forget = () => {
@@ -218,9 +222,9 @@ function NavigationBar() {
                     <Nav.Link onClick={() => navigate("product")}>
                       Products
                     </Nav.Link>
-                    <a className="nav-link scrollto" href="#contact">
+                    {/* <a className="nav-link scrollto" href="#contact">
                       Contact
-                    </a>
+                    </a> */}
                   </div>
 
                   {!isSignIn ? (
@@ -299,11 +303,7 @@ function NavigationBar() {
                       className="form-size"
                     />
                   </Form.Group>
-                  {error ? (
-                    <Alert variant="danger">
-                      Error : username or password doesn't match
-                    </Alert>
-                  ) : null}
+                  {error ? <Alert variant="danger">{error}</Alert> : null}
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check
                       type="checkbox"
