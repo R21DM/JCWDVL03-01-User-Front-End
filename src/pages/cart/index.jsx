@@ -21,6 +21,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Cart() {
   //Declare navigate
   const navigate = useNavigate();
+  const KEY = sessionStorage.getItem("key");
 
   //Redux state
   const dispatch = useDispatch();
@@ -61,7 +62,6 @@ function Cart() {
   }
 
   useEffect(() => {
-    const KEY = sessionStorage.getItem("key");
     if (!KEY) {
       return navigate("/");
     }
@@ -119,7 +119,7 @@ function Cart() {
       .catch((err) => {
         console.log(err);
       });
-    dispatch(getCartData(user.id));
+    dispatch(getCartData(KEY));
   };
 
   //Update cart item
@@ -140,7 +140,7 @@ function Cart() {
         console.log(err);
       });
 
-    dispatch(getCartData(user.id));
+    dispatch(getCartData(KEY));
 
     setEditableItem({
       ...editableItem,

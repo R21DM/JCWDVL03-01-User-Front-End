@@ -23,6 +23,7 @@ function Product_Detail() {
   //Redux state
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const KEY = sessionStorage.getItem("key");
 
   //Get data from query params
   const params = useParams();
@@ -92,7 +93,7 @@ function Product_Detail() {
   const addToCart = () => {
     //Cart Data
     const cartData = {
-      userId: user.id,
+      userId: KEY,
       productId: id,
       qty: order_qty,
       price: product_price,
@@ -195,7 +196,7 @@ function Product_Detail() {
                     <div className="product-price-details">
                       <p className="text-right">{product_desc}</p>
                       {/* Add To Cart */}
-                      {user.id ? (
+                      {KEY ? (
                         <>
                           <div className="d-flex flex-row w-100 bg-dark">
                             <div className="mx-2 my-2 d-flex w-100 justify-content-center">

@@ -15,14 +15,9 @@ import Product_Detail from "./pages/products-detail";
 import Cart from "./pages/cart";
 import Payment from "./pages/payment";
 import History from "./pages/history";
+import History_Detail from "./pages/history-detail";
 
 function Main() {
-  const { user } = useSelector((state) => {
-    return {
-      user: state.user,
-    };
-  });
-
   return (
     <div className="main-container">
       <Navbar />
@@ -35,6 +30,7 @@ function Main() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/history" element={<History />} />
+        <Route path="/history/:id" element={<History_Detail />} />
       </Routes>
       <Footer />
     </div>

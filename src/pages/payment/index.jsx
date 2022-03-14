@@ -11,6 +11,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Payment() {
   //Declare navigate
   const navigate = useNavigate();
+  const KEY = sessionStorage.getItem("key");
   //Redux state
   const { cart } = useSelector((state) => {
     return {
@@ -34,7 +35,6 @@ function Payment() {
   const [showModal, setShowModal] = useState();
 
   useEffect(() => {
-    const KEY = sessionStorage.getItem("key");
     if (!KEY) {
       return navigate("/");
     }
@@ -63,7 +63,7 @@ function Payment() {
 
   const handleClose = () => {
     //Clear cart items
-    Axios.delete(API_URL + `/cart/deleteCart`, { params: { id: user.id } })
+    Axios.delete(API_URL + `/cart/deleteCart`, { params: { id: KEY } })
       .then((respond) => {
         console.log("Delete success", respond);
       })
@@ -90,7 +90,7 @@ function Payment() {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      params: { id: user.id },
+      params: { id: KEY },
     })
       .then((respond) => {
         console.log("respond", respond);
@@ -131,7 +131,7 @@ function Payment() {
     setLoading(true);
 
     const orderData = {
-      id: user.id,
+      id: KEY,
       total: cart.totalPrice + deliveryFee,
       address,
       city,
