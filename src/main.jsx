@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { getCartData } from "../src/actions/cart-actions";
 import "./index.css";
 
 // pages
@@ -11,8 +13,16 @@ import Register from "./pages/register";
 import Verify from "./pages/verify";
 import Product_Detail from "./pages/products-detail";
 import Cart from "./pages/cart";
+import Payment from "./pages/payment";
+import History from "./pages/history";
 
 function Main() {
+  const { user } = useSelector((state) => {
+    return {
+      user: state.user,
+    };
+  });
+
   return (
     <div className="main-container">
       <Navbar />
@@ -22,11 +32,9 @@ function Main() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
         <Route path="/product/:id" element={<Product_Detail />} />
-        <Route
-          path="/cart"
-          // element={user.id ? <Cart /> : <Navigate to="/" />}
-          element={<Cart />}
-        />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/history" element={<History />} />
       </Routes>
       <Footer />
     </div>

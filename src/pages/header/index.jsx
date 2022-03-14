@@ -74,6 +74,7 @@ function NavigationBar() {
   };
   const closeLogin = () => {
     setShow(false);
+    dispatch({ type: "SIGN_OFF" });
   };
 
   const onButtonLogin = () => {
@@ -84,7 +85,7 @@ function NavigationBar() {
 
         // save token or id in web storage
         if (keep) {
-          localStorage.setItem("token", respond.data.token_data);
+          localStorage.setItem("token", respond.data.id);
         }
 
         // data user dijadikan JWTToken, bisa diubah jadi userdata
@@ -102,7 +103,7 @@ function NavigationBar() {
 
         if (!keep) {
           // window.onbeforeunload = localStorage.removeItem("token");
-          window.sessionStorage.setItem("key", respond.data.token_data);
+          window.sessionStorage.setItem("key", respond.data.id);
         }
 
         console.log(user);
@@ -276,7 +277,11 @@ function NavigationBar() {
 
             {/* ------------------------------------- Login -------------------------------------*/}
 
-            <Modal show={show} onHide={closeLogin} className="modal-size">
+            <Modal
+              show={show || user.signIn}
+              onHide={closeLogin}
+              className="modal-size"
+            >
               <Modal.Header className="modal-header">
                 <Modal.Title className="center title">Login</Modal.Title>
               </Modal.Header>
