@@ -49,7 +49,7 @@ function History() {
     Axios.get(API_URL + "/history", { params: { id: KEY } })
       .then((respond) => {
         console.log(respond);
-        setHistory(respond.data);
+        setHistory(respond.data.reverse());
         console.log(history);
       })
       .catch((err) => console.log(err));

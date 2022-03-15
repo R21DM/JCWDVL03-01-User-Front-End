@@ -62,15 +62,6 @@ function Payment() {
   };
 
   const handleClose = () => {
-    //Clear cart items
-    Axios.delete(API_URL + `/cart/deleteCart`, { params: { id: KEY } })
-      .then((respond) => {
-        console.log("Delete success", respond);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     setShowModal(false);
 
     setLoading(false);
