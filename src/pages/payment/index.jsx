@@ -78,7 +78,7 @@ function Payment() {
 
     console.log(dataArray);
 
-    Axios.post(ADMIN_URL, dataArray, {
+    Axios.post(ADMIN_URL + "/paymentProof", dataArray, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
