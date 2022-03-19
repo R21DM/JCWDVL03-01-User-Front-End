@@ -55,11 +55,16 @@ function Product(props) {
     Axios.get(API_URL + `/products/get`)
       .then((respond) => {
         // console.log(respond.data);
+        setPage(1);
         dispatch(getProducts(""));
         setLoading(false);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [products]);
 
   useEffect(() => {
     //Set pagination
@@ -132,12 +137,16 @@ function Product(props) {
                     console.log("pill", pill);
                     if (!syringe) {
                       if (pill && !syringe) {
+                        setPage(1);
                         return dispatch(categoryProducts(""));
                       }
+                      setPage(1);
                       dispatch(categoryProducts("Syringe"));
                     } else if (!pill && syringe) {
+                      setPage(1);
                       dispatch(categoryProducts("none"));
-                    } else dispatch(categoryProducts("pill"));
+                    } else setPage(1);
+                    dispatch(categoryProducts("pill"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -157,12 +166,16 @@ function Product(props) {
                     console.log("pill", !pill);
                     if (!pill) {
                       if (!pill && syringe) {
+                        setPage(1);
                         return dispatch(categoryProducts(""));
                       }
+                      setPage(1);
                       dispatch(categoryProducts("pill"));
                     } else if (pill && !syringe) {
+                      setPage(1);
                       dispatch(categoryProducts("none"));
-                    } else dispatch(categoryProducts("Syringe"));
+                    } else setPage(1);
+                    dispatch(categoryProducts("Syringe"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault3">
@@ -182,6 +195,7 @@ function Product(props) {
                   id="sortFil"
                   name="sortPrice"
                   onChange={() => {
+                    setPage(1);
                     dispatch(sortFilter(`asc`));
                   }}
                 />
@@ -197,6 +211,7 @@ function Product(props) {
                   id="sortFil2"
                   name="sortPrice"
                   onChange={() => {
+                    setPage(1);
                     dispatch(sortFilter(`desc`));
                   }}
                 />
@@ -222,6 +237,7 @@ function Product(props) {
                     }}
                     onChange={(e) => {
                       console.log(e.target.value);
+                      setPage(1);
                       return dispatch(minPriceFilter(e.target.value));
                     }}
                   />

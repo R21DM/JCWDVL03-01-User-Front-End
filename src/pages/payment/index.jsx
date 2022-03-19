@@ -13,6 +13,7 @@ function Payment() {
   //Declare navigate
   const navigate = useNavigate();
   const KEY = sessionStorage.getItem("key");
+  const KEY2 = localStorage.getItem("token");
   //Redux state
   const { cart } = useSelector((state) => {
     return {
@@ -37,7 +38,9 @@ function Payment() {
 
   useEffect(() => {
     if (!KEY) {
-      return navigate("/");
+      if (!KEY2) {
+        return navigate("/");
+      }
     }
   }, []);
 
@@ -82,7 +85,7 @@ function Payment() {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      params: { id: KEY },
+      params: { id: KEY || KEY2 },
     })
       .then((respond) => {
         console.log("Respond", respond);
@@ -123,7 +126,7 @@ function Payment() {
     setLoading(true);
 
     const orderData = {
-      id: KEY,
+      id: KEY || KEY2,
       total: cart.totalPrice + deliveryFee,
       address,
       city,

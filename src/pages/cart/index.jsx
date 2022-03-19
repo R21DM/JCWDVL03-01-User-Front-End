@@ -22,6 +22,7 @@ function Cart() {
   //Declare navigate
   const navigate = useNavigate();
   const KEY = sessionStorage.getItem("key");
+  const KEY2 = localStorage.getItem("token");
 
   //Redux state
   const dispatch = useDispatch();
@@ -62,11 +63,15 @@ function Cart() {
 
   useEffect(() => {
     if (!KEY) {
-      return navigate("/");
+      if (!KEY2) {
+        return navigate("/");
+      }
     }
 
     //Get cart data by user id
-    dispatch(getCartData(KEY));
+    if (KEY) {
+      dispatch(getCartData(KEY));
+    } else dispatch(getCartData(KEY2));
 
     //Check user data
     console.log("cart:", cart);
@@ -114,7 +119,9 @@ function Cart() {
     Axios.delete(API_URL + `/cart`, { params: { id } })
       .then((respond) => {
         console.log("Delete success", respond);
-        dispatch(getCartData(KEY));
+        if (KEY) {
+          dispatch(getCartData(KEY));
+        } else dispatch(getCartData(KEY2));
       })
       .catch((err) => {
         console.log(err);
@@ -135,7 +142,9 @@ function Cart() {
       .then((respond) => {
         console.log("Update success", respond);
 
-        dispatch(getCartData(KEY));
+        if (KEY) {
+          dispatch(getCartData(KEY));
+        } else dispatch(getCartData(KEY2));
 
         setEditableItem({
           ...editableItem,

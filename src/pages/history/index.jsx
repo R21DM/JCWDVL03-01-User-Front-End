@@ -42,11 +42,14 @@ function History() {
 
   useEffect(() => {
     const KEY = sessionStorage.getItem("key");
+    const KEY2 = localStorage.getItem("token");
     if (!KEY) {
-      return navigate("/");
+      if (!KEY2) {
+        return navigate("/");
+      }
     }
 
-    Axios.get(API_URL + "/history", { params: { id: KEY } })
+    Axios.get(API_URL + "/history", { params: { id: KEY || KEY2 } })
       .then((respond) => {
         console.log(respond);
         setHistory(respond.data.reverse());

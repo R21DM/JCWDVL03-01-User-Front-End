@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Form, Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
@@ -14,6 +14,8 @@ function Register() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
+  const navigate = useNavigate();
+
   //Variable Name
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +26,10 @@ function Register() {
   //Show Modal & Modal Handler
   const [showModal, setModal] = useState(false);
 
-  const handleCloseModal = () => setModal(false);
+  const handleCloseModal = () => {
+    setModal(false);
+    navigate("/");
+  };
   const handleShowModal = () => setModal(true);
 
   //Error state
@@ -180,15 +185,15 @@ function Register() {
           .then((respond) => {
             console.log("respond", respond);
             setModal(true);
+
+            //Clear Input Form
+            clearInput();
           })
           .catch((error) => console.log(error));
       })
       .catch((error) => {
         console.log(error);
       });
-
-    //Clear Input Form
-    clearInput();
   };
 
   //Render webpage

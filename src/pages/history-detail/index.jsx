@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Image } from "react-bootstrap";
 import Axios from "axios";
 import { useSelector } from "react-redux";
@@ -7,8 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
+const KEY = sessionStorage.getItem("key");
+const KEY2 = localStorage.getItem("token");
 
 function History_Detail() {
+  const navigate = useNavigate();
   //Redux state
   const { user } = useSelector((state) => {
     return {
@@ -27,6 +30,12 @@ function History_Detail() {
   const [shippingPrice, setShippingPrice] = useState(0);
 
   useEffect(() => {
+    if (!KEY) {
+      if (!KEY2) {
+        return navigate("/");
+      }
+    }
+
     Axios.get(API_URL + `/history/${id}`)
       .then((respond) => {
         console.log(respond);
