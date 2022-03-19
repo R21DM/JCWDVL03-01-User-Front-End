@@ -107,6 +107,9 @@ function NavigationBar() {
         }
 
         console.log(user);
+
+        //Refresh page
+        window.location.reload();
       })
       .catch((error) => {
         setError(parseRes(error));

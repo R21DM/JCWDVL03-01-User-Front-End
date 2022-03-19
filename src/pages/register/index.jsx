@@ -242,8 +242,7 @@ function Register() {
                   isInvalid={errorPassword}
                 />
                 <Form.Text className="text-muted">
-                  Use 8 or more characters with a mix of letters, numbers and
-                  symbols.
+                  Use 8 or more characters and must contain numbers and symbols.
                 </Form.Text>
               </Form.Group>
 

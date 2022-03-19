@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
+const ADMIN_URL = process.env.REACT_APP_LOCAL_URL;
 
 function Payment() {
   //Declare navigate
@@ -62,15 +63,6 @@ function Payment() {
   };
 
   const handleClose = () => {
-    //Clear cart items
-    Axios.delete(API_URL + `/cart/deleteCart`, { params: { id: KEY } })
-      .then((respond) => {
-        console.log("Delete success", respond);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     setShowModal(false);
 
     setLoading(false);
@@ -86,17 +78,17 @@ function Payment() {
 
     console.log(dataArray);
 
-    Axios.post(API_URL, dataArray, {
+    Axios.post(ADMIN_URL + "/paymentProof", dataArray, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
       params: { id: KEY },
     })
       .then((respond) => {
-        console.log("respond", respond);
+        console.log("Respond", respond);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error", error);
       });
   };
 

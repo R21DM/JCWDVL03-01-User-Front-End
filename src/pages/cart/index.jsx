@@ -42,7 +42,6 @@ function Cart() {
   const [indexStartItem, setIndexStartItem] = useState(0);
   const [itemCount, setItemCount] = useState(0);
   const [editMode, setEditMode] = useState(false);
-  const [id, setID] = useState(null);
 
   //Pagination control
   const active = page;
@@ -115,11 +114,11 @@ function Cart() {
     Axios.delete(API_URL + `/cart`, { params: { id } })
       .then((respond) => {
         console.log("Delete success", respond);
+        dispatch(getCartData(KEY));
       })
       .catch((err) => {
         console.log(err);
       });
-    dispatch(getCartData(KEY));
   };
 
   //Update cart item
@@ -135,19 +134,19 @@ function Cart() {
     Axios.patch(API_URL + `/cart`, { id, qty })
       .then((respond) => {
         console.log("Update success", respond);
+
+        dispatch(getCartData(KEY));
+
+        setEditableItem({
+          ...editableItem,
+          [id]: false,
+        });
+
+        setEditMode(false);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    dispatch(getCartData(KEY));
-
-    setEditableItem({
-      ...editableItem,
-      [id]: false,
-    });
-
-    setEditMode(false);
   };
 
   const renderCartItems = () => {

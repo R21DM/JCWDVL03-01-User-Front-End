@@ -49,7 +49,7 @@ function History() {
     Axios.get(API_URL + "/history", { params: { id: KEY } })
       .then((respond) => {
         console.log(respond);
-        setHistory(respond.data);
+        setHistory(respond.data.reverse());
         console.log(history);
       })
       .catch((err) => console.log(err));
@@ -76,7 +76,17 @@ function History() {
             <Card className="w-80 mx-2" style={{ width: "90vw" }}>
               <Card.Body className="d-flex flex-row justify-content-between">
                 <Card.Title>
-                  {txn_item.code} - {txn_item.status}
+                  <span
+                    className={
+                      txn_item.status === "Approved"
+                        ? "text-success"
+                        : txn_item.status === "Rejected"
+                        ? "text-danger"
+                        : "text-warning"
+                    }
+                  >
+                    {txn_item.code} - {txn_item.status}
+                  </span>
                 </Card.Title>
                 <Card.Title>{`Rp ${txn_item.total_price.toLocaleString(
                   "in-ID"
