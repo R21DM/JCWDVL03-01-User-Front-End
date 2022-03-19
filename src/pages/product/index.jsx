@@ -6,6 +6,7 @@ import {
   getProducts,
   categoryProducts,
   minPriceFilter,
+  sortFilter,
 } from "../../actions/product-actions";
 import { Button, Card, Form, Pagination } from "react-bootstrap";
 import "../product/style.css";
@@ -166,6 +167,41 @@ function Product(props) {
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault3">
                   Pill
+                </label>
+              </div>
+            </div>
+            <div className="filter-header2">
+              <div className="filter-header-color">
+                <h6 className="left2">Sort</h6>
+              </div>
+
+              <div className="left2 form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  id="sortFil"
+                  name="sortPrice"
+                  onChange={() => {
+                    dispatch(sortFilter(`asc`));
+                  }}
+                />
+                <label className="form-check-label" htmlFor="sortFil">
+                  Lowest Price
+                </label>
+              </div>
+
+              <div className="left2 form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  id="sortFil2"
+                  name="sortPrice"
+                  onChange={() => {
+                    dispatch(sortFilter(`desc`));
+                  }}
+                />
+                <label className="form-check-label" htmlFor="sortFil2">
+                  Highest Price
                 </label>
               </div>
             </div>
