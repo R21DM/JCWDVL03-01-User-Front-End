@@ -145,8 +145,7 @@ function Product(props) {
                     } else if (!pill && syringe) {
                       setPage(1);
                       dispatch(categoryProducts("none"));
-                    } else setPage(1);
-                    dispatch(categoryProducts("pill"));
+                    } else dispatch(categoryProducts("pill"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -174,8 +173,7 @@ function Product(props) {
                     } else if (pill && !syringe) {
                       setPage(1);
                       dispatch(categoryProducts("none"));
-                    } else setPage(1);
-                    dispatch(categoryProducts("Syringe"));
+                    } else dispatch(categoryProducts("Syringe"));
                   }}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault3">
