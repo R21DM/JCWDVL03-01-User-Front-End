@@ -96,12 +96,22 @@ function Product(props) {
                 {product.price}
                 {`/${product.unit}`}
               </Card.Text>
-              <Button
-                variant="primary"
-                onClick={() => navigation(`/product/${product.id}`)}
-              >
-                Check Details
-              </Button>
+              {!product.volume == 0 ? (
+                <Button
+                  variant="primary"
+                  onClick={() => navigation(`/product/${product.id}`)}
+                >
+                  Check Details
+                </Button>
+              ) : (
+                <Button
+                  disabled={true}
+                  variant="primary"
+                  onClick={() => navigation(`/product/${product.id}`)}
+                >
+                  Out of Stock
+                </Button>
+              )}
             </Card.Body>
           </Card>
         );
