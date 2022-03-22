@@ -1,0 +1,34 @@
+.verification-container {
+  width: 100vw;
+  height: 80vh;
+  background-color: #ecf0f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verification-notification {
+  display: flex;
+  flex-direction: column;
+  padding: 3% 5%;
+  width: 80%;
+  height: 50%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  margin-top: 20vh;
+}
+
+.center-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verification-font-1 {
+  font-size: 18pt;
+}
+
+.verification-font-2 {
+  font-size: 14pt;
+}
