@@ -16,6 +16,7 @@ import Cart from "./pages/cart";
 import Payment from "./pages/payment";
 import History from "./pages/history";
 import History_Detail from "./pages/history-detail";
+import Change from "./pages/change"
 
 function Main() {
   return (
@@ -24,6 +25,7 @@ function Main() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/change-password" element={<Change />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/product" element={<Product />} />
         <Route path="/product/:id" element={<Product_Detail />} />
